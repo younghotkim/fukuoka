@@ -11,34 +11,47 @@ export default function AppleIcon() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: 8,
-          background: "linear-gradient(152deg, #ff2d95 0%, #b362ff 46%, #00e8ff 100%)"
+          background: "linear-gradient(180deg, #faf2e1 0%, #f0e5cf 100%)"
         }}
       >
         <div
           style={{
-            fontSize: 80,
-            fontWeight: 900,
-            color: "#fff",
-            lineHeight: 1,
-            letterSpacing: "-0.02em",
-            textShadow: "0 4px 12px rgba(11, 4, 30, 0.4)"
+            width: 116,
+            height: 116,
+            borderRadius: 9999,
+            background: "#d12c2c",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 2,
+            boxShadow: "0 4px 12px rgba(138, 31, 36, 0.28)"
           }}
         >
-          Y&amp;J
-        </div>
-        <div
-          style={{
-            fontSize: 20,
-            fontWeight: 800,
-            color: "rgba(11, 4, 30, 0.82)",
-            letterSpacing: "0.32em"
-          }}
-        >
-          FUKUOKA
+          <div
+            style={{
+              fontSize: 48,
+              fontWeight: 900,
+              color: "#fbf5e8",
+              lineHeight: 1,
+              letterSpacing: "-0.02em"
+            }}
+          >
+            Y&amp;J
+          </div>
+          <div
+            style={{
+              fontSize: 15,
+              fontWeight: 800,
+              color: "#fbf5e8",
+              letterSpacing: "0.22em",
+              opacity: 0.85
+            }}
+          >
+            福岡
+          </div>
         </div>
       </div>
     ),
