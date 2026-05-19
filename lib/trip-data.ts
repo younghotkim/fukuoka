@@ -96,14 +96,14 @@ export const categoryLabels: Record<TripCategory, string> = {
 };
 
 export const categoryColors: Record<TripCategory, string> = {
-  food: "#d75b48",     // 朱色 shu-iro vermilion
-  coffee: "#7a4d2b",   // 茶 cha brown
-  beer: "#d9a23a",     // 山吹 yamabuki gold
-  whisky: "#9c3b3b",   // 弁柄 bengara red-brown
-  sight: "#325b8c",    // 紺青 konjō indigo
-  shopping: "#7a6699", // 桔梗 kikyō muted purple
-  transit: "#3a4555",  // 鈍色 nibi-iro slate
-  hotel: "#6a9c5e"     // 若竹 wakatake bamboo green
+  food: "#d12c2c",     // 日の丸 hinomaru red — the headline category
+  coffee: "#7a4d2b",   // 茶 cha — warm brown
+  beer: "#d9a23a",     // 山吹 yamabuki — gold
+  whisky: "#8a1f24",   // 真朱 shinshu — deep lacquer red
+  sight: "#b08438",    // 古代金 ancient gold — for sights
+  shopping: "#6b4a4a", // 鳶色 tobi-iro — kite-brown
+  transit: "#3a2e2a",  // 涅色 kuri-iro — dark roasted chestnut
+  hotel: "#c4302a"     // 朱色 shu-iro — warm vermilion
 };
 
 export const tripStops: TripStop[] = [
