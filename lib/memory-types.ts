@@ -1,4 +1,4 @@
-export type CommentAuthor = "youngha" | "sohyun";
+export type CommentAuthor = "youngha" | "joonho";
 
 export type Comment = {
   id: string;
@@ -9,12 +9,12 @@ export type Comment = {
 
 export const authorLabels: Record<CommentAuthor, string> = {
   youngha: "영하",
-  sohyun: "소현"
+  joonho: "준호"
 };
 
 export const authorInitials: Record<CommentAuthor, string> = {
   youngha: "영",
-  sohyun: "소"
+  joonho: "소"
 };
 
 export type ExpenseCategory = "none" | "food" | "drink" | "transport" | "shopping" | "ticket" | "etc";
@@ -34,7 +34,7 @@ export const expenseCategoryLabels: Record<ExpenseCategory, string> = {
 export const expensePayerLabels: Record<ExpensePayer, string> = {
   none: "결제자",
   y: "영하",
-  s: "소현",
+  s: "준호",
   shared: "공동"
 };
 
@@ -49,7 +49,7 @@ export type Memory = {
   status: "planned" | "going" | "done" | "skipped";
   rating: number; // legacy combined rating — kept for back-compat; UI now uses ratingY/ratingS
   ratingY: number; // 영하's star rating, 0–5
-  ratingS: number; // 소현's star rating, 0–5
+  ratingS: number; // 준호's star rating, 0–5
   note: string;
   comments: Comment[];
   photoUrl: string;
@@ -124,7 +124,7 @@ function normalizeComments(raw: unknown, legacy: { yComment?: unknown; sComment?
       if (!entry || typeof entry !== "object") continue;
       const c = entry as Partial<Comment>;
       const author: CommentAuthor =
-        c.author === "youngha" || c.author === "sohyun" ? c.author : "youngha";
+        c.author === "youngha" || c.author === "joonho" ? c.author : "youngha";
       if (typeof c.text !== "string" || !c.text.trim()) continue;
       list.push({
         id: typeof c.id === "string" ? c.id : newCommentId(),
@@ -140,7 +140,7 @@ function normalizeComments(raw: unknown, legacy: { yComment?: unknown; sComment?
       list.push({ id: newCommentId(), author: "youngha", text: legacy.yComment, at: new Date(0).toISOString() });
     }
     if (typeof legacy.sComment === "string" && legacy.sComment.trim()) {
-      list.push({ id: newCommentId(), author: "sohyun", text: legacy.sComment, at: new Date(0).toISOString() });
+      list.push({ id: newCommentId(), author: "joonho", text: legacy.sComment, at: new Date(0).toISOString() });
     }
   }
   return list;

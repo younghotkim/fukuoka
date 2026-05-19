@@ -47,7 +47,7 @@ export async function fetchWeather(
   signal?: AbortSignal
 ): Promise<WeatherForecast | null> {
   try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,precipitation_probability,weather_code&daily=temperature_2m_min,temperature_2m_max,precipitation_probability_max,weather_code&timezone=Asia%2FTaipei&forecast_days=7`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,precipitation_probability,weather_code&daily=temperature_2m_min,temperature_2m_max,precipitation_probability_max,weather_code&timezone=Asia%2FFukuoka&forecast_days=7`;
     const response = await fetch(url, { signal, cache: "no-store" });
     if (!response.ok) return null;
     const payload = (await response.json()) as {
@@ -114,7 +114,7 @@ export type ExchangeRates = {
 };
 
 export async function fetchExchangeRate(
-  from: string = "TWD",
+  from: string = "JPY",
   to: string = "KRW",
   signal?: AbortSignal
 ): Promise<number | null> {

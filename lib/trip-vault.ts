@@ -1,6 +1,6 @@
 export type VaultKind = "flight" | "hotel" | "activity" | "transport" | "esim" | "insurance" | "document" | "other";
 export type VaultStatus = "confirmed" | "pending" | "cancelled";
-export type VaultOwner = "shared" | "youngha" | "sohyun";
+export type VaultOwner = "shared" | "youngha" | "joonho";
 
 export type VaultItem = {
   id: string;
@@ -23,7 +23,7 @@ export type VaultBook = VaultItem[];
 
 const KINDS: VaultKind[] = ["flight", "hotel", "activity", "transport", "esim", "insurance", "document", "other"];
 const STATUSES: VaultStatus[] = ["confirmed", "pending", "cancelled"];
-const OWNERS: VaultOwner[] = ["shared", "youngha", "sohyun"];
+const OWNERS: VaultOwner[] = ["shared", "youngha", "joonho"];
 
 export const vaultKindLabels: Record<VaultKind, string> = {
   flight: "항공",
@@ -45,7 +45,7 @@ export const vaultStatusLabels: Record<VaultStatus, string> = {
 export const vaultOwnerLabels: Record<VaultOwner, string> = {
   shared: "공동",
   youngha: "영하",
-  sohyun: "소현"
+  joonho: "준호"
 };
 
 export function newVaultId(): string {

@@ -15,7 +15,7 @@ import type { PackItem } from "@/lib/packing";
 import type { VaultItem } from "@/lib/trip-vault";
 import { daysUntilExpiry, type Traveler, type TravelerBook } from "@/lib/travelers";
 
-const dismissKey = "taipei-trip-departure-dismissed-v1";
+const dismissKey = "yj-fukuoka-departure-dismissed-v1";
 
 type Mode = "plan" | "today" | "vault" | "memories" | "ledger" | "recap";
 
@@ -94,7 +94,7 @@ export function DepartureWidget({
           }`;
 
     const t1 = travelers.youngha;
-    const t2 = travelers.sohyun;
+    const t2 = travelers.joonho;
     const passportDone = [t1, t2].filter(passportComplete).length;
     // Expiry-aware: passports expiring within 6 months → warn
     const soonExpiring = [t1, t2]

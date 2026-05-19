@@ -9,7 +9,7 @@ import {
   type TravelerId
 } from "./travelers";
 
-const storageKey = "taipei-trip-travelers-v1";
+const storageKey = "yj-fukuoka-travelers-v1";
 
 export type TravelerSyncStatus = "local" | "loading" | "synced" | "saving" | "offline";
 

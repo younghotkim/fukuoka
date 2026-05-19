@@ -203,17 +203,17 @@ export function StopEditor({
 
       <div className="stop-editor__grid">
         <label className="field">
-          <span>中文 명칭</span>
+          <span>일본어 명칭</span>
           <input value={form.nameZh} onChange={(e) => update("nameZh", e.target.value)} />
         </label>
         <label className="field">
-          <span>MRT</span>
+          <span>지하철·JR</span>
           <input value={form.mrt} onChange={(e) => update("mrt", e.target.value)} />
         </label>
       </div>
 
       <label className="field">
-        <span>현장 한 마디 (中文)</span>
+        <span>현장 한 마디 (日本語)</span>
         <input value={form.phrase} onChange={(e) => update("phrase", e.target.value)} />
       </label>
 
@@ -352,7 +352,7 @@ export function DayEditor({
 
   const handleSave = async () => {
     setSaving(true);
-    const ok = await onSave({ day: day.day, date, title, mood, summary }, sortOrder);
+    const ok = await onSave({ day: day.day, date, title, mood, summary, journal: day.journal }, sortOrder);
     setSaving(false);
     if (ok) setDirty(false);
   };
@@ -375,7 +375,7 @@ export function DayEditor({
                   setDate(e.target.value);
                   setDirty(true);
                 }}
-                placeholder="5/15 금"
+                placeholder="5/22 금"
               />
             </label>
             <label className="field field--wide">

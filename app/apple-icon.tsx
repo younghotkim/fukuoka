@@ -28,7 +28,7 @@ export default function AppleIcon() {
             textShadow: "0 4px 12px rgba(11, 4, 30, 0.4)"
           }}
         >
-          Y&amp;S
+          Y&amp;J
         </div>
         <div
           style={{
@@ -38,7 +38,7 @@ export default function AppleIcon() {
             letterSpacing: "0.32em"
           }}
         >
-          TAIPEI
+          FUKUOKA
         </div>
       </div>
     ),

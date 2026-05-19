@@ -127,9 +127,9 @@ export function LedgerMode({
     split.y === 0 && split.s === 0
       ? "결제자 미지정"
       : split.y > split.s
-        ? `소현 → 영하  TWD ${Math.round((split.y - split.s) / 2).toLocaleString()}`
+        ? `준호 → 영하  JPY ${Math.round((split.y - split.s) / 2).toLocaleString()}`
         : split.s > split.y
-          ? `영하 → 소현  TWD ${Math.round((split.s - split.y) / 2).toLocaleString()}`
+          ? `영하 → 준호  JPY ${Math.round((split.s - split.y) / 2).toLocaleString()}`
           : "균등 — 정산 불필요";
 
   const byCat = new Map<ExpenseCategory, number>();
@@ -162,12 +162,12 @@ export function LedgerMode({
       <section className="ledger-summary">
         <div className="ledger-summary__total">
           <span>총 지출</span>
-          <strong>TWD {total.toLocaleString()}</strong>
+          <strong>JPY {total.toLocaleString()}</strong>
           <TwdKrwLabel twd={total} />
         </div>
         <div className="ledger-summary__split">
           <div><span>영하 결제</span><strong>{split.y.toLocaleString()}</strong></div>
-          <div><span>소현 결제</span><strong>{split.s.toLocaleString()}</strong></div>
+          <div><span>준호 결제</span><strong>{split.s.toLocaleString()}</strong></div>
           <div><span>공동</span><strong>{split.shared.toLocaleString()}</strong></div>
           <div><span>미지정</span><strong>{split.unassigned.toLocaleString()}</strong></div>
         </div>
@@ -190,7 +190,7 @@ export function LedgerMode({
             onKeyDown={(e) => {
               if (e.key === "Enter") submit();
             }}
-            placeholder="얼마 (TWD)"
+            placeholder="얼마 (JPY)"
             aria-label="금액"
           />
           <button className="ledger-add__submit" onClick={submit} disabled={!amount}>
@@ -200,7 +200,7 @@ export function LedgerMode({
         </div>
         {Number(amount) > 0 && (
           <div className="ledger-add__krw">
-            TWD {Number(amount).toLocaleString()} <TwdKrwLabel twd={Number(amount)} />
+            JPY {Number(amount).toLocaleString()} <TwdKrwLabel twd={Number(amount)} />
           </div>
         )}
         <input
@@ -210,7 +210,7 @@ export function LedgerMode({
           onKeyDown={(e) => {
             if (e.key === "Enter") submit();
           }}
-          placeholder="메모 — 세븐일레븐, MRT 충전, 망고빙수…"
+          placeholder="메모 — 세븐일레븐, IC카드 충전, 멘타이코 우동…"
           aria-label="메모"
         />
         <div className="ledger-add__selects">
@@ -290,7 +290,7 @@ export function LedgerMode({
             <div key={d} className="ledger-day">
               <header className="ledger-day__head">
                 <strong>{dayLabel(d)}</strong>
-                <span>TWD {sub.toLocaleString()}</span>
+                <span>JPY {sub.toLocaleString()}</span>
               </header>
               {rows.map((r) => (
                 <div key={r.id} className={`ledger-row ledger-row--${r.kind} ledger-row--pay-${r.payer}`}>
@@ -314,7 +314,7 @@ export function LedgerMode({
                       onClick={async () => {
                         const ok = await confirm({
                           title: "이 지출 기록을 삭제할까요?",
-                          description: `${r.label || "지출"} · TWD ${r.amount.toLocaleString()} · ${expenseCategoryLabels[r.category]}`
+                          description: `${r.label || "지출"} · JPY ${r.amount.toLocaleString()} · ${expenseCategoryLabels[r.category]}`
                         });
                         if (ok) onRemove(r.id);
                       }}

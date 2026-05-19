@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { normalizeVaultBook, type VaultBook, type VaultItem } from "./trip-vault";
 
-const storageKey = "taipei-trip-vault-v1";
+const storageKey = "yj-fukuoka-vault-v1";
 
 export type VaultSyncStatus = "local" | "loading" | "synced" | "saving" | "offline";
 

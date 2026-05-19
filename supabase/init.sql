@@ -1,5 +1,5 @@
 -- ============================================================================
--- Taipei Trip Diary — Supabase init script (idempotent, safe to re-run)
+-- Y&J Fukuoka Trip Diary — Supabase init script (idempotent, safe to re-run)
 -- Run this in Supabase Dashboard → SQL Editor for a fresh project.
 -- ============================================================================
 
@@ -94,8 +94,8 @@ create table if not exists public.trip_stops (
   phrase text not null default '',
   category text not null default 'sight'
     check (category in ('food', 'coffee', 'beer', 'whisky', 'sight', 'shopping', 'transit', 'hotel')),
-  lat double precision not null default 25.043,
-  lng double precision not null default 121.525,
+  lat double precision not null default 33.5904,
+  lng double precision not null default 130.4017,
   highlights text[] not null default '{}',
   prompt text not null default '',
   maps_query text not null default '',
@@ -222,7 +222,7 @@ alter table public.trip_vault add column if not exists flight_no text not null d
 
 create table if not exists public.trip_travelers (
   trip_id text not null,
-  id text not null check (id in ('youngha', 'sohyun')),
+  id text not null check (id in ('youngha', 'joonho')),
   passport_name text not null default '',
   passport_no text not null default '',
   nationality text not null default 'KOR',

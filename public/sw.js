@@ -1,4 +1,4 @@
-/* Conservative service worker for the Taipei trip PWA.
+/* Conservative service worker for the Fukuoka trip PWA.
    - never caches /api/* (always network — dynamic data)
    - never touches cross-origin requests (Supabase, Google Maps, etc.)
    - cache-first for content-hashed /_next/static assets
@@ -7,7 +7,7 @@
    - stale-while-revalidate for other same-origin GETs (icons, manifest, ...)
    Bump CACHE_VERSION to invalidate everything on a new deploy. */
 
-const CACHE_VERSION = "taipei-trip-v3";
+const CACHE_VERSION = "yj-fukuoka-v3";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

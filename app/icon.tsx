@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 export const size = { width: 512, height: 512 };
 export const contentType = "image/png";
 
-// Home-screen / PWA app icon — text-forward "Y&S TAIPEI" on a neon gradient,
+// Home-screen / PWA app icon — text-forward "Y&J FUKUOKA" on a neon gradient,
 // no flag. Content stays inside the central ~70% so it survives Android's
 // maskable crop.
 export default function Icon() {
@@ -31,7 +31,7 @@ export default function Icon() {
             textShadow: "0 10px 30px rgba(11, 4, 30, 0.45)"
           }}
         >
-          Y&amp;S
+          Y&amp;J
         </div>
         <div
           style={{
@@ -41,7 +41,7 @@ export default function Icon() {
             letterSpacing: "0.34em"
           }}
         >
-          TAIPEI
+          FUKUOKA
         </div>
       </div>
     ),

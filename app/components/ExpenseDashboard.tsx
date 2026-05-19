@@ -7,7 +7,7 @@ export function useTwdToKrw() {
   const [rate, setRate] = useState<number | null>(null);
   useEffect(() => {
     const controller = new AbortController();
-    fetchExchangeRate("TWD", "KRW", controller.signal).then((value) => {
+    fetchExchangeRate("JPY", "KRW", controller.signal).then((value) => {
       if (controller.signal.aborted) return;
       setRate(value);
     });

@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { normalizePackBook, presetPackBook, type PackBook, type PackItem } from "./packing";
 
-const storageKey = "taipei-trip-packing-v1";
-const seededKey = "taipei-trip-packing-seeded-v1";
+const storageKey = "yj-fukuoka-packing-v1";
+const seededKey = "yj-fukuoka-packing-seeded-v1";
 
 export type PackingSyncStatus = "local" | "loading" | "synced" | "saving" | "offline";
 

@@ -6,7 +6,7 @@ import { distanceMeters, watchPosition } from "@/lib/integrations";
 import { tripStops, type TripStop } from "@/lib/trip-data";
 import { getStopMemory, type Memory, type MemoryBook } from "@/lib/memory-types";
 
-const ENABLED_KEY = "taipei-trip-gps-auto";
+const ENABLED_KEY = "yj-fukuoka-gps-auto";
 const ARRIVAL_RADIUS_METERS = 80;
 const DEPARTURE_RADIUS_METERS = 160;
 

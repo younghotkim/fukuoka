@@ -17,7 +17,7 @@ function pick<T>(pool: T[], better: (a: T, b: T) => boolean): T | null {
 }
 
 // 연속 스톱 간 직선거리에 도시 보행 디투어 보정(×1.3)을 적용해 "도보 추정 거리"를 만든다.
-// 2km를 넘는 구간은 MRT/택시로 이동했다고 보고 제외한다.
+// 2km를 넘는 구간은 지하철·택시로 이동했다고 보고 제외한다.
 const WALK_DETOUR_FACTOR = 1.3;
 const WALK_LEG_CAP_M = 2000;
 
@@ -109,9 +109,9 @@ export function RecapMode({
     split.y === 0 && split.s === 0
       ? "결제자 미지정"
       : split.y > split.s
-        ? `S → Y  TWD ${Math.round((split.y - split.s) / 2).toLocaleString()}`
+        ? `준호 → 영하  JPY ${Math.round((split.y - split.s) / 2).toLocaleString()}`
         : split.s > split.y
-          ? `Y → S  TWD ${Math.round((split.s - split.y) / 2).toLocaleString()}`
+          ? `영하 → 준호  JPY ${Math.round((split.s - split.y) / 2).toLocaleString()}`
           : "균등 — 정산 불필요";
 
   return (
@@ -120,7 +120,7 @@ export function RecapMode({
         <div>
           <span>회고 · RECAP</span>
           <h1>여행 정리</h1>
-          <p>5/15 — 5/18 타이베이 + 이란 여행 기록을 한 페이지로.</p>
+          <p>5/22 — 5/24 후쿠오카 우정여행 기록을 한 페이지로.</p>
         </div>
         <div className="recap-head__actions">
           <a className="wide-link" href="/recap/print" target="_blank" rel="noreferrer">
@@ -137,7 +137,7 @@ export function RecapMode({
       <section className="recap-grid">
         <article className="recap-card recap-card--big">
           <span>총 지출</span>
-          <strong>TWD {totalSpent.toLocaleString()}</strong>
+          <strong>JPY {totalSpent.toLocaleString()}</strong>
           <TwdKrwLabel twd={totalSpent} />
         </article>
         <article className="recap-card">
@@ -175,20 +175,20 @@ export function RecapMode({
         </header>
         <div className="recap-settle__grid">
           <div>
-            <span>Y 결제</span>
-            <strong>TWD {split.y.toLocaleString()}</strong>
+            <span>영하 결제</span>
+            <strong>JPY {split.y.toLocaleString()}</strong>
           </div>
           <div>
-            <span>S 결제</span>
-            <strong>TWD {split.s.toLocaleString()}</strong>
+            <span>준호 결제</span>
+            <strong>JPY {split.s.toLocaleString()}</strong>
           </div>
           <div>
             <span>공동</span>
-            <strong>TWD {split.shared.toLocaleString()}</strong>
+            <strong>JPY {split.shared.toLocaleString()}</strong>
           </div>
           <div>
             <span>미지정</span>
-            <strong>TWD {split.unassigned.toLocaleString()}</strong>
+            <strong>JPY {split.unassigned.toLocaleString()}</strong>
           </div>
         </div>
       </section>
@@ -196,7 +196,7 @@ export function RecapMode({
       <section className="recap-chart">
         <header>
           <Sparkles size={16} />
-          <strong>일자별 지출 (TWD)</strong>
+          <strong>일자별 지출 (JPY)</strong>
         </header>
         <div className="recap-chart__bars">
           {expenseByDay.map((entry) => (
@@ -217,7 +217,7 @@ export function RecapMode({
         <header>
           <Footprints size={16} />
           <strong>일자별 도보 추정</strong>
-          <span>스톱 사이 직선거리 × 1.3 · 2km 초과 구간(MRT/택시) 제외</span>
+          <span>스톱 사이 직선거리 × 1.3 · 2km 초과 구간(지하철·택시) 제외</span>
         </header>
         <div className="recap-chart__bars">
           {walkByDay.map((entry) => (
@@ -337,7 +337,7 @@ function RecapWrapped({
         {priciest && (
           <button className="recap-wrapped__card recap-wrapped__card--tap" onClick={() => onSelectStop(priciest.stop)}>
             <span>{meals.length ? "제일 비쌌던 한 끼" : "가장 큰 한 방"}</span>
-            <strong>TWD {priciest.memory.expenseAmount.toLocaleString()}</strong>
+            <strong>JPY {priciest.memory.expenseAmount.toLocaleString()}</strong>
             <small>{priciest.stop.title}</small>
           </button>
         )}
@@ -350,7 +350,7 @@ function RecapWrapped({
         )}
         {sFav && (
           <button className="recap-wrapped__card recap-wrapped__card--tap recap-wrapped__card--s" onClick={() => onSelectStop(sFav.stop)}>
-            <span>소현 최애</span>
+            <span>준호 최애</span>
             <strong>{sFav.stop.title}</strong>
             <small>{"★".repeat(sFav.memory.ratingS)}</small>
           </button>
@@ -359,7 +359,7 @@ function RecapWrapped({
           <button className="recap-wrapped__card recap-wrapped__card--tap" onClick={() => onSelectStop(splitStop.stop)}>
             <span>의견 제일 갈린 곳</span>
             <strong>{splitStop.stop.title}</strong>
-            <small>영하 {splitStop.memory.ratingY} · 소현 {splitStop.memory.ratingS}</small>
+            <small>영하 {splitStop.memory.ratingY} · 준호 {splitStop.memory.ratingS}</small>
           </button>
         )}
         {latest && (
@@ -497,7 +497,7 @@ function RecapStories({
                 <span>{combinedRating(memory) ? `★ ${combinedRating(memory)}` : "·"}</span>
                 {memory.comments.length > 0 && <span>💬 {memory.comments.length}</span>}
                 {memory.expenseAmount > 0 && (
-                  <span>TWD {memory.expenseAmount.toLocaleString()}</span>
+                  <span>JPY {memory.expenseAmount.toLocaleString()}</span>
                 )}
               </div>
             </button>

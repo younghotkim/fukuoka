@@ -5,7 +5,7 @@ import type { ExpenseCategory, ExpenseMethod, ExpensePayer } from "./memory-type
 export type ExpenseEntry = {
   id: string;
   day: number; // trip day (1..N), or 0 = 날짜 미지정
-  amount: number; // TWD, integer >= 0
+  amount: number; // JPY, integer >= 0
   category: ExpenseCategory;
   payer: ExpensePayer;
   method: ExpenseMethod;

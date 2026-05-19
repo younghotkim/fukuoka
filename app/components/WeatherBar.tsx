@@ -9,7 +9,7 @@ import {
   type DailyWeather
 } from "@/lib/integrations";
 
-const TAIPEI = { lat: 25.043, lng: 121.525 };
+const FUKUOKA = { lat: 33.5904, lng: 130.4017 };
 
 function pickIcon(code: number) {
   if (code === 0 || code === 1) return <Sun size={18} />;
@@ -17,7 +17,7 @@ function pickIcon(code: number) {
   return <Cloud size={18} />;
 }
 
-export function useWeatherForecast(coords: { lat: number; lng: number } = TAIPEI) {
+export function useWeatherForecast(coords: { lat: number; lng: number } = FUKUOKA) {
   const [forecast, setForecast] = useState<WeatherForecast | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +36,7 @@ export function useWeatherForecast(coords: { lat: number; lng: number } = TAIPEI
 }
 
 export function WeatherBar({ coords }: { coords?: { lat: number; lng: number } }) {
-  const { forecast, loading } = useWeatherForecast(coords ?? TAIPEI);
+  const { forecast, loading } = useWeatherForecast(coords ?? FUKUOKA);
 
   if (loading) {
     return (
@@ -80,7 +80,7 @@ export function WeatherBar({ coords }: { coords?: { lat: number; lng: number } }
   );
 }
 
-export function useDailyForecast(coords: { lat: number; lng: number } = TAIPEI) {
+export function useDailyForecast(coords: { lat: number; lng: number } = FUKUOKA) {
   const { forecast, loading } = useWeatherForecast(coords);
   const byDate: Record<string, DailyWeather> = {};
   forecast?.daily.forEach((entry) => {

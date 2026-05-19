@@ -49,7 +49,7 @@ import {
   type MemoryBook
 } from "@/lib/memory-types";
 
-const authorStorageKey = "taipei-trip-comment-author-v1";
+const authorStorageKey = "yj-fukuoka-comment-author-v1";
 
 function nowHHMM(d: Date) {
   return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
@@ -78,7 +78,7 @@ function CompactCapture({
 
   useEffect(() => {
     const stored = window.localStorage.getItem(authorStorageKey);
-    if (stored === "youngha" || stored === "sohyun") setAuthor(stored);
+    if (stored === "youngha" || stored === "joonho") setAuthor(stored);
   }, []);
 
   const pickAuthor = (a: CommentAuthor) => {
@@ -121,7 +121,7 @@ function CompactCapture({
       <div className="quest-capture__ratings">
         {([
           ["youngha", "영하", memory.ratingY, (v: number) => onChange({ ratingY: v })],
-          ["sohyun", "소현", memory.ratingS, (v: number) => onChange({ ratingS: v })]
+          ["joonho", "준호", memory.ratingS, (v: number) => onChange({ ratingS: v })]
         ] as const).map(([key, label, value, set]) => (
           <div key={key} className={`quest-rating-row quest-rating-row--${key}`}>
             <span className="quest-rating-row__who">{label}</span>
@@ -142,7 +142,7 @@ function CompactCapture({
       </div>
       <div className="quest-capture__comment">
         <div className="quest-capture__who">
-          {(["youngha", "sohyun"] as CommentAuthor[]).map((a) => (
+          {(["youngha", "joonho"] as CommentAuthor[]).map((a) => (
             <button
               key={a}
               className={
@@ -175,7 +175,7 @@ function CompactCapture({
       </div>
       <div className="quest-capture__expense">
         <label className="quest-expense__amount">
-          <span>지출 TWD</span>
+          <span>지출 JPY</span>
           <input
             inputMode="numeric"
             value={memory.expenseAmount ? String(memory.expenseAmount) : ""}
@@ -301,7 +301,7 @@ function CompactCapture({
   );
 }
 
-const notifyStorageKey = "taipei-trip-quest-notify-v1";
+const notifyStorageKey = "yj-fukuoka-quest-notify-v1";
 
 const dirUrl = (lat: number, lng: number) =>
   `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
@@ -413,7 +413,7 @@ export function TodayMode({
     const dayWrap = stops.filter((s) => s.day === stop.day).every((s) => s.id === stop.id || isCleared(s));
     flash(
       remaining.length === 0
-        ? `🇹🇼 여정 완료! ${stop.title} 까지 완주`
+        ? `🇯🇵 여정 완료! ${stop.title} 까지 완주`
         : dayWrap
           ? `🏆 Day ${stop.day} 클리어! · ${stop.title}`
           : `🎉 ${stop.title} 클리어!`,
@@ -474,7 +474,7 @@ export function TodayMode({
       if (diff >= 0 && diff <= 1 && !firedNotifsRef.current.has(s.id)) {
         firedNotifsRef.current.add(s.id);
         try {
-          new Notification("Y & S Taipei — 다음 일정", { body: `${s.time} · ${s.title}`, tag: `quest-${s.id}` });
+          new Notification("Y & J Fukuoka — 다음 일정", { body: `${s.time} · ${s.title}`, tag: `quest-${s.id}` });
         } catch {
           /* notifications may be blocked at the OS level */
         }
@@ -670,9 +670,9 @@ export function TodayMode({
         <div className={allComplete ? "journey-celebrate journey-celebrate--final" : "journey-celebrate"}>
           <Trophy size={18} />
           {allComplete ? (
-            <strong>🇹🇼 여정 완료! · {doneCount}개 스톱 완주</strong>
+            <strong>🇯🇵 여정 완료! · {doneCount}개 스톱 완주</strong>
           ) : (
-            <strong>🇹🇼 Day {fullyClearedDay} 클리어! · {days.find((d) => d.day === fullyClearedDay)?.title}</strong>
+            <strong>🇯🇵 Day {fullyClearedDay} 클리어! · {days.find((d) => d.day === fullyClearedDay)?.title}</strong>
           )}
         </div>
       )}
@@ -700,7 +700,7 @@ export function TodayMode({
             {currentQuest.nameZh && (
               <div className="quest-card__local">
                 <span className="quest-card__zh">{currentQuest.nameZh}</span>
-                {currentQuest.mrt && <span className="quest-card__mrt">MRT · {currentQuest.mrt}</span>}
+                {currentQuest.mrt && <span className="quest-card__mrt">🚇 {currentQuest.mrt}</span>}
                 {currentQuest.phrase && (
                   <button
                     type="button"
@@ -770,7 +770,7 @@ export function TodayMode({
                 target="_blank"
                 rel="noreferrer"
               >
-                🚇 대중교통(MRT)
+                🚇 대중교통
               </a>
             </div>
             <div className="quest-near">
@@ -797,8 +797,8 @@ export function TodayMode({
       ) : (
         <section className="quest-card quest-card--done">
           <Trophy size={28} />
-          <h2>모든 퀘스트 완료 🇹🇼</h2>
-          <p>23개 스톱 여정을 끝냈어요. 회고 모드에서 정리하고 PDF 사진북을 만들어보세요.</p>
+          <h2>모든 퀘스트 완료 🇯🇵</h2>
+          <p>여정을 끝냈어요. 회고 모드에서 정리하고 PDF 사진북을 만들어보세요.</p>
         </section>
       )}
 
@@ -813,7 +813,7 @@ export function TodayMode({
           {currentQuest && <MiniRouteStrip from={currentQuest} to={nextQuest} />}
           {currentQuest && <NextStopEta from={currentQuest} to={nextQuest} />}
           <div className="quest-next__meta">
-            {nextQuest.mrt && <span>MRT · {nextQuest.mrt}</span>}
+            {nextQuest.mrt && <span>🚇 {nextQuest.mrt}</span>}
             {nextQuest.phrase && (
               <button
                 onClick={() => {
@@ -844,7 +844,7 @@ export function TodayMode({
               target="_blank"
               rel="noreferrer"
             >
-              🚇 MRT
+              🚇 지하철·JR
             </a>
             <button className="quest-next__jump" onClick={() => onSelectStop(nextQuest)}>
               미리 보기 →
@@ -861,7 +861,7 @@ export function TodayMode({
         {currentQuest && (
           <div className="journey-side__spend">
             <span>오늘 (Day {currentQuest.day}) 지출</span>
-            <strong>TWD {todaySpend.toLocaleString()}</strong>
+            <strong>JPY {todaySpend.toLocaleString()}</strong>
             <TwdKrwLabel twd={todaySpend} />
           </div>
         )}
@@ -924,7 +924,7 @@ export function TodayMode({
                       {combinedRating(m) > 0 && ` · ★ ${combinedRating(m)}`}
                       {m.comments.length > 0 && ` · 💬${m.comments.length}`}
                       {m.photos.length > 0 && ` · 📷${m.photos.length}`}
-                      {m.expenseAmount > 0 && ` · TWD ${m.expenseAmount.toLocaleString()}`}
+                      {m.expenseAmount > 0 && ` · JPY ${m.expenseAmount.toLocaleString()}`}
                     </small>
                   </span>
                 </button>

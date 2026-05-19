@@ -9,7 +9,7 @@ import {
   type ExpenseLedger
 } from "./expense-ledger";
 
-const storageKey = "taipei-trip-expenses-v1";
+const storageKey = "yj-fukuoka-expenses-v1";
 
 export type ExpenseSyncStatus = "local" | "loading" | "synced" | "saving" | "offline";
 

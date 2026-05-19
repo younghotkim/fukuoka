@@ -84,7 +84,7 @@ export const photoBucket = process.env.SUPABASE_PHOTO_BUCKET ?? "trip-photos";
 const supabaseUrl = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-export const tripId = process.env.TRIP_ID ?? "taipei-2026";
+export const tripId = process.env.TRIP_ID ?? "fukuoka-2026";
 
 export function isSupabaseConfigured() {
   return Boolean(supabaseUrl && serviceRoleKey);

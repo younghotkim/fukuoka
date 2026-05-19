@@ -1,4 +1,4 @@
-export const travelerIds = ["youngha", "sohyun"] as const;
+export const travelerIds = ["youngha", "joonho"] as const;
 export type TravelerId = (typeof travelerIds)[number];
 
 export type Traveler = {
@@ -18,7 +18,7 @@ export type TravelerBook = Record<TravelerId, Traveler>;
 
 export const travelerLabels: Record<TravelerId, string> = {
   youngha: "영하",
-  sohyun: "소현"
+  joonho: "준호"
 };
 
 export function emptyTraveler(id: TravelerId): Traveler {
@@ -39,12 +39,12 @@ export function emptyTraveler(id: TravelerId): Traveler {
 export function emptyTravelerBook(): TravelerBook {
   return {
     youngha: emptyTraveler("youngha"),
-    sohyun: emptyTraveler("sohyun")
+    joonho: emptyTraveler("joonho")
   };
 }
 
 function isTravelerId(value: unknown): value is TravelerId {
-  return value === "youngha" || value === "sohyun";
+  return value === "youngha" || value === "joonho";
 }
 
 export function normalizeTraveler(value: unknown, fallbackId: TravelerId): Traveler {
@@ -67,7 +67,7 @@ export function normalizeTraveler(value: unknown, fallbackId: TravelerId): Trave
 export function normalizeTravelerBook(value: unknown): TravelerBook {
   const base = emptyTravelerBook();
   if (!value) return base;
-  // accept either { youngha: {...}, sohyun: {...} } or [{id:"youngha",...}, ...]
+  // accept either { youngha: {...}, joonho: {...} } or [{id:"youngha",...}, ...]
   if (Array.isArray(value)) {
     for (const entry of value) {
       const raw = entry && typeof entry === "object" ? (entry as Partial<Traveler>) : null;

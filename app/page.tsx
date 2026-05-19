@@ -32,7 +32,7 @@ import {
   Trash2,
   Wallet
 } from "lucide-react";
-import { TaiwanFlag } from "./components/TaiwanFlag";
+import { JapanFlag } from "./components/JapanFlag";
 import { MapView } from "./components/MapView";
 import { TodayMode } from "./components/TodayMode";
 import { RecapMode } from "./components/RecapMode";
@@ -41,7 +41,7 @@ import { categoryIcon } from "./components/icons";
 import { DayWeatherBadge } from "./components/WeatherBar";
 import { PhotoUploader } from "./components/PhotoUploader";
 import { PackingList } from "./components/PackingList";
-import { TaipeiInfo } from "./components/TaipeiInfo";
+import { FukuokaInfo } from "./components/FukuokaInfo";
 import { TravelerCards } from "./components/TravelerCards";
 import { FlightStatusBadge } from "./components/FlightStatusBadge";
 import { VaultFileField } from "./components/VaultFileField";
@@ -95,14 +95,13 @@ type MemoryView = "list" | "edit";
 type SyncStatus = "local" | "loading" | "synced" | "saving" | "offline" | "error";
 type TripStatus = Memory["status"];
 
-const storageKey = "taipei-trip-memory-book-v1";
-const modeStorageKey = "taipei-trip-mode-v1";
+const storageKey = "yj-fukuoka-memory-book-v1";
+const modeStorageKey = "yj-fukuoka-mode-v1";
 
 const dayIsoDates: Record<number, string> = {
-  1: "2026-05-15",
-  2: "2026-05-16",
-  3: "2026-05-17",
-  4: "2026-05-18"
+  1: "2026-05-22",
+  2: "2026-05-23",
+  3: "2026-05-24"
 };
 
 const isoDayMap: Record<string, number> = Object.fromEntries(
@@ -404,8 +403,8 @@ function HomeShell() {
       mrt: "",
       phrase: "",
       category: "sight",
-      lat: anchor?.lat ?? 25.043,
-      lng: anchor?.lng ?? 121.525,
+      lat: anchor?.lat ?? 33.5904,
+      lng: anchor?.lng ?? 130.4017,
       highlights: [],
       prompt: "",
       mapsQuery: ""
@@ -489,7 +488,7 @@ function HomeShell() {
 
   const exportMemories = () => {
     const payload = {
-      title: "Y & S Taipei — Trip Diary",
+      title: "Y & J Fukuoka — Trip Diary",
       exportedAt: new Date().toISOString(),
       memories: memoryBook
     };
@@ -497,7 +496,7 @@ function HomeShell() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "taipei-trip-memories.json";
+    link.download = "yj-fukuoka-memories.json";
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -534,18 +533,18 @@ function HomeShell() {
     <main className={`app-shell app-shell--${mode}`}>
       <header className="topbar">
         <div className="brand">
-          <span className="brand__mark" aria-label="대만국기 - 타이베이 여행">
-            <TaiwanFlag className="brand__flag" />
-            <span className="brand__mark-label">TAIPEI</span>
+          <span className="brand__mark" aria-label="일본 국기 - 후쿠오카 우정여행">
+            <JapanFlag className="brand__flag" />
+            <span className="brand__mark-label">FUKUOKA</span>
           </span>
           <div className="brand__copy">
             <strong>
-              <span className="brand__zh">Y&amp;S</span>
-              <span className="brand__en">台北</span>
+              <span className="brand__zh">Y&amp;J</span>
+              <span className="brand__en">福岡</span>
             </strong>
             <small>
               <span className="brand__dot" aria-hidden="true" />
-              5.15 — 5.18 · 西門町 NEON DIARY
+              5.22 — 5.24 · 博多 屋台 DIARY
             </small>
           </div>
         </div>
@@ -1084,7 +1083,7 @@ function MemoriesShell({
             <textarea
               value={importText}
               onChange={(event) => setImportText(event.target.value)}
-              placeholder="taipei-trip-memories.json 내용을 붙여넣기"
+              placeholder="yj-fukuoka-memories.json 내용을 붙여넣기"
             />
             <span>{importError}</span>
             <button className="wide-link wide-link--primary" onClick={importMemories}>
@@ -1127,7 +1126,7 @@ function MemoriesShell({
                   {statusLabels[memory.status]}
                   <span>{combinedRating(memory) ? `★ ${combinedRating(memory)}` : "별점 전"}</span>
                   {memory.comments.length > 0 && <span>💬 {memory.comments.length}</span>}
-                  {memory.expenseAmount > 0 && <span>TWD {memory.expenseAmount.toLocaleString()}</span>}
+                  {memory.expenseAmount > 0 && <span>JPY {memory.expenseAmount.toLocaleString()}</span>}
                 </span>
                 {memory.photoUrl && (
                   <span className="photo-link">
@@ -1267,7 +1266,7 @@ function VaultMode({
         <div>
           <span><Luggage size={13} /> 여행 준비</span>
           <h1>준비물 · 예약 · 정보</h1>
-          <p>항공·숙소·예약 보관함, 챙길 준비물 체크리스트, 타이베이 현지 정보를 한 곳에.</p>
+          <p>항공·숙소·예약 보관함, 챙길 준비물 체크리스트, 후쿠오카 현지 정보를 한 곳에.</p>
         </div>
         <div className="vault-stats">
           <div><span>예약·문서</span><strong>{items.length}</strong></div>
@@ -1310,7 +1309,7 @@ function VaultMode({
         <section className="vault-add">
           <label className="field field--wide">
             <span>제목</span>
-            <input value={draft.title} onChange={(e) => updateDraft("title", e.target.value)} placeholder="예: 카발란 투어 예약" autoFocus />
+            <input value={draft.title} onChange={(e) => updateDraft("title", e.target.value)} placeholder="예: 모지코 디너 예약" autoFocus />
           </label>
           <div className="vault-add__grid">
             <label className="field">
@@ -1365,7 +1364,7 @@ function VaultMode({
               </select>
             </label>
             <label className="field">
-              <span>금액 TWD</span>
+              <span>금액 JPY</span>
               <input
                 inputMode="numeric"
                 placeholder="0"
@@ -1432,7 +1431,7 @@ function VaultMode({
               {item.provider && <span>{item.provider}</span>}
               {item.confirmation && <span>예약번호 {item.confirmation}</span>}
               <span>{vaultOwnerLabels[item.owner]}</span>
-              {item.amount > 0 && <span>TWD {item.amount.toLocaleString()}</span>}
+              {item.amount > 0 && <span>JPY {item.amount.toLocaleString()}</span>}
             </div>
             {item.location && <p className="vault-card__loc">{item.location}</p>}
             {item.notes && <p>{item.notes}</p>}
@@ -1479,7 +1478,7 @@ function VaultMode({
         onReset={packing.resetToPreset}
       />
 
-      <TaipeiInfo />
+      <FukuokaInfo />
     </section>
   );
 }
@@ -1544,7 +1543,7 @@ function MemoryEditor({
       <div className="rating-pair">
         {([
           ["youngha", "영하", memory.ratingY, (v: number) => onChange({ ratingY: v })],
-          ["sohyun", "소현", memory.ratingS, (v: number) => onChange({ ratingS: v })]
+          ["joonho", "준호", memory.ratingS, (v: number) => onChange({ ratingS: v })]
         ] as const).map(([key, label, value, set]) => (
           <div key={key} className={`rating-line rating-line--${key}`}>
             <span className="rating-line__who">{label}</span>
@@ -1591,7 +1590,7 @@ function MemoryEditor({
       </label>
       <div className="expense-row expense-row--four">
         <label className="field">
-          <span>지출 TWD</span>
+          <span>지출 JPY</span>
           <input
             inputMode="numeric"
             value={memory.expenseAmount ? String(memory.expenseAmount) : ""}

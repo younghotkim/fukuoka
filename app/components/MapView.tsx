@@ -20,7 +20,7 @@ declare global {
         SymbolPath: { CIRCLE: number };
       };
     };
-    initTaipeiTripMap?: () => void;
+    initFukuokaTripMap?: () => void;
   }
 }
 
@@ -89,17 +89,17 @@ export function MapView({
       return;
     }
 
-    window.initTaipeiTripMap = () => setMapReady(true);
+    window.initFukuokaTripMap = () => setMapReady(true);
     const existingScript = document.querySelector<HTMLScriptElement>(
-      'script[data-taipei-trip-map="true"]'
+      'script[data-yj-fukuoka-map="true"]'
     );
     if (existingScript) return;
 
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initTaipeiTripMap&loading=async`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initFukuokaTripMap&loading=async`;
     script.async = true;
     script.defer = true;
-    script.dataset.taipeiTripMap = "true";
+    script.dataset.fukuokaTripMap = "true";
     document.head.appendChild(script);
   }, []);
 
@@ -108,8 +108,8 @@ export function MapView({
 
     const googleMaps = window.google.maps;
     const map = new googleMaps.Map(mapRef.current, {
-      center: { lat: 25.043, lng: 121.525 },
-      zoom: 12,
+      center: { lat: 33.5904, lng: 130.4017 },
+      zoom: 13,
       disableDefaultUI: false,
       mapTypeControl: false,
       streetViewControl: false,
@@ -117,12 +117,12 @@ export function MapView({
       styles: [
         { featureType: "poi", stylers: [{ visibility: "off" }] },
         { featureType: "transit", stylers: [{ saturation: -40 }] },
-        { featureType: "water", stylers: [{ color: "#1a103d" }] },
-        { featureType: "road", elementType: "geometry", stylers: [{ color: "#241548" }] },
-        { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#a08bd0" }] },
-        { featureType: "landscape", stylers: [{ color: "#150a30" }] },
-        { elementType: "labels.text.fill", stylers: [{ color: "#c6b0e6" }] },
-        { elementType: "labels.text.stroke", stylers: [{ color: "#0a0524" }] }
+        { featureType: "water", stylers: [{ color: "#102045" }] },
+        { featureType: "road", elementType: "geometry", stylers: [{ color: "#162048" }] },
+        { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#8aa0d6" }] },
+        { featureType: "landscape", stylers: [{ color: "#0d1530" }] },
+        { elementType: "labels.text.fill", stylers: [{ color: "#c8d0e3" }] },
+        { elementType: "labels.text.stroke", stylers: [{ color: "#0a1530" }] }
       ]
     });
 

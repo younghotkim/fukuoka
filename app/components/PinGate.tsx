@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 const PIN = "0102";
-const UNLOCK_KEY = "taipei-trip-pin-unlocked-v1";
+const UNLOCK_KEY = "yj-fukuoka-pin-unlocked-v1";
 const PIN_LENGTH = 4;
 
 // Routes that are intentionally public — the printable / shareable photobook.
@@ -89,13 +89,13 @@ export function PinGate({ children }: { children: React.ReactNode }) {
   return (
     <div className="pin-gate" role="dialog" aria-modal="true" aria-label="비밀번호 입력">
       <div className="pin-gate__bg" aria-hidden="true">
-        <span className="pin-gate__kanji">西門町</span>
+        <span className="pin-gate__kanji">博多</span>
       </div>
       <div className="pin-gate__card">
         <header className="pin-gate__head">
-          <span className="pin-gate__kicker">Y&amp;S · 西門町 NEON DIARY</span>
+          <span className="pin-gate__kicker">Y&amp;J · 博多 屋台 DIARY</span>
           <h1>비밀번호를 입력해 주세요</h1>
-          <p>둘만의 일정 · 네 자리 비밀번호</p>
+          <p>20년지기 우정여행 · 네 자리 비밀번호</p>
         </header>
 
         <div

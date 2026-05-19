@@ -5,13 +5,13 @@ import { PinGate } from "./components/PinGate";
 import { PwaRegister } from "./components/PwaRegister";
 
 export const metadata: Metadata = {
-  title: "Y&S Taipei · 西門町 Trip Diary",
-  description: "5.15-5.18 타이베이 여행 일정과 우리가 남길 기록",
-  applicationName: "Y&S Taipei",
+  title: "Y&J Fukuoka · 博多 屋台 Trip Diary",
+  description: "5.22-5.24 후쿠오카 우정여행 — 일정·준비·기록·회고",
+  applicationName: "Y&J Fukuoka",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Y&S Taipei"
+    title: "Y&J Fukuoka"
   }
 };
 
@@ -19,7 +19,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0a0524"
+  themeColor: "#0a1530"
 };
 
 export default function RootLayout({

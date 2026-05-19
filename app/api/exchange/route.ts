@@ -12,7 +12,7 @@ type ErApiResponse = {
 
 export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
-  const from = (sp.get("from") ?? "TWD").toUpperCase();
+  const from = (sp.get("from") ?? "JPY").toUpperCase();
   const to = (sp.get("to") ?? "KRW").toUpperCase();
 
   // Two free, no-key providers; try the first, fall back to the second.

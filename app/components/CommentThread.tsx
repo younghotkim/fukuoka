@@ -11,7 +11,7 @@ import {
 } from "@/lib/memory-types";
 import { useConfirm } from "./ConfirmProvider";
 
-const authorStorageKey = "taipei-trip-comment-author-v1";
+const authorStorageKey = "yj-fukuoka-comment-author-v1";
 
 function formatAt(iso: string) {
   const d = new Date(iso);
@@ -41,7 +41,7 @@ export function CommentThread({
 
   useEffect(() => {
     const stored = window.localStorage.getItem(authorStorageKey);
-    if (stored === "youngha" || stored === "sohyun") setAuthor(stored);
+    if (stored === "youngha" || stored === "joonho") setAuthor(stored);
   }, []);
 
   const pickAuthor = (next: CommentAuthor) => {
@@ -99,7 +99,7 @@ export function CommentThread({
       <div className="comment-composer">
         <div className="comment-composer__who" role="group" aria-label="작성자">
           <span>나는</span>
-          {(["youngha", "sohyun"] as CommentAuthor[]).map((a) => (
+          {(["youngha", "joonho"] as CommentAuthor[]).map((a) => (
             <button
               key={a}
               type="button"

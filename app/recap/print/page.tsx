@@ -3,7 +3,7 @@
 import "./print.css";
 import { useEffect, useMemo, useState } from "react";
 import { Check, Link2, Printer, Sparkles } from "lucide-react";
-import { TaiwanFlag } from "../../components/TaiwanFlag";
+import { JapanFlag } from "../../components/JapanFlag";
 import { PhotoLightbox } from "../../components/PhotoLightbox";
 import {
   categoryColors,
@@ -23,7 +23,7 @@ import {
   type MemoryBook
 } from "@/lib/memory-types";
 
-const storageKey = "taipei-trip-memory-book-v1";
+const storageKey = "yj-fukuoka-memory-book-v1";
 
 function stopHasStory(memory: Memory): boolean {
   return Boolean(
@@ -67,7 +67,7 @@ export default function RecapPrintPage() {
         }
       })
       .catch(() => {});
-    void fetch("/api/exchange?from=TWD&to=KRW")
+    void fetch("/api/exchange?from=JPY&to=KRW")
       .then((response) => (response.ok ? response.json() : null))
       .then((payload: { rate?: number } | null) => {
         if (typeof payload?.rate === "number") setExchangeRate(payload.rate);
@@ -138,7 +138,7 @@ export default function RecapPrintPage() {
   // Longest single comment as the "둘이 남긴 한마디" — most likely to be quotable.
   const topComment = entries
     .flatMap((e) => e.memory.comments.map((c) => ({ stop: e.stop, comment: c })))
-    .reduce<{ stop: TripStop; comment: { author: "youngha" | "sohyun"; text: string; id: string; at: string } } | null>(
+    .reduce<{ stop: TripStop; comment: { author: "youngha" | "joonho"; text: string; id: string; at: string } } | null>(
       (best, cur) => (best === null || cur.comment.text.length > best.comment.text.length ? cur : best),
       null
     );
@@ -204,15 +204,15 @@ export default function RecapPrintPage() {
 
         <div className="book-cover__inner">
           <header className="book-cover__head">
-            <TaiwanFlag className="book-cover__flag" />
-            <span className="book-cover__kicker">西門町 NEON DIARY</span>
+            <JapanFlag className="book-cover__flag" />
+            <span className="book-cover__kicker">博多 屋台 DIARY</span>
           </header>
           <h1 className="book-cover__title">
-            Y &amp; S<br />
-            <em>Taipei</em>
+            Y &amp; J<br />
+            <em>Fukuoka</em>
           </h1>
           <p className="book-cover__sub">5월 15일 — 5월 18일 · 2026</p>
-          <p className="book-cover__byline">영하 &amp; 소현이 함께 쓴 여행 일기</p>
+          <p className="book-cover__byline">영하 &amp; 준호이 함께 쓴 여행 일기</p>
           <div className="book-cover__stats">
             <div>
               <span>사진</span>
@@ -228,7 +228,7 @@ export default function RecapPrintPage() {
             </div>
             <div>
               <span>총 지출</span>
-              <strong>TWD {totalSpent.toLocaleString()}</strong>
+              <strong>JPY {totalSpent.toLocaleString()}</strong>
               {exchangeRate && (
                 <small>≈ ₩{Math.round(totalSpent * exchangeRate).toLocaleString()}</small>
               )}
@@ -357,12 +357,12 @@ export default function RecapPrintPage() {
                         {combinedRating(memory) > 0 && (
                           <span className="book-stop__rating">
                             {"★".repeat(Math.round(combinedRating(memory)))}
-                            <em> · 영하 {memory.ratingY || "·"} / 소현 {memory.ratingS || "·"}</em>
+                            <em> · 영하 {memory.ratingY || "·"} / 준호 {memory.ratingS || "·"}</em>
                           </span>
                         )}
                         {memory.expenseAmount > 0 && (
                           <span className="book-stop__spend">
-                            TWD {memory.expenseAmount.toLocaleString()}
+                            JPY {memory.expenseAmount.toLocaleString()}
                           </span>
                         )}
                       </footer>
@@ -401,7 +401,7 @@ export default function RecapPrintPage() {
             )}
             {sFav && (
               <div className="book-highlight book-highlight--s">
-                <span>소현 최애</span>
+                <span>준호 최애</span>
                 <strong>{sFav.stop.title}</strong>
                 <small>{"★".repeat(sFav.memory.ratingS)}</small>
               </div>
@@ -420,7 +420,7 @@ export default function RecapPrintPage() {
       )}
 
       <footer className="book-foot">
-        <span>Y &amp; S · 西門町 NEON DIARY · 2026</span>
+        <span>Y &amp; J · 博多 屋台 DIARY · 2026</span>
         <small>둘이 같이 쓴 작은 여행 일기</small>
       </footer>
 
