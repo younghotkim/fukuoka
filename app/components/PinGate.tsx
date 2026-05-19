@@ -4,7 +4,7 @@ import { Delete } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-const PIN = "0102";
+const PIN = "0000";
 const UNLOCK_KEY = "yj-fukuoka-pin-unlocked-v1";
 const PIN_LENGTH = 4;
 
