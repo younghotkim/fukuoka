@@ -117,12 +117,12 @@ export function MapView({
       styles: [
         { featureType: "poi", stylers: [{ visibility: "off" }] },
         { featureType: "transit", stylers: [{ saturation: -40 }] },
-        { featureType: "water", stylers: [{ color: "#102045" }] },
-        { featureType: "road", elementType: "geometry", stylers: [{ color: "#162048" }] },
-        { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#8aa0d6" }] },
-        { featureType: "landscape", stylers: [{ color: "#0d1530" }] },
-        { elementType: "labels.text.fill", stylers: [{ color: "#c8d0e3" }] },
-        { elementType: "labels.text.stroke", stylers: [{ color: "#0a1530" }] }
+        { featureType: "water", stylers: [{ color: "#dee9c0" }] },
+        { featureType: "road", elementType: "geometry", stylers: [{ color: "#f8f1e1" }] },
+        { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#6b5a45" }] },
+        { featureType: "landscape", stylers: [{ color: "#f5ede0" }] },
+        { elementType: "labels.text.fill", stylers: [{ color: "#2a221a" }] },
+        { elementType: "labels.text.stroke", stylers: [{ color: "#fbf5e8" }] }
       ]
     });
 
