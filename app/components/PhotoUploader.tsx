@@ -1,9 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Loader2, Trash2, Upload } from "lucide-react";
+import { Trash2, Upload } from "lucide-react";
 import { useConfirm } from "./ConfirmProvider";
 import { PhotoLightbox } from "./PhotoLightbox";
+import { ToriiSpinner } from "./ToriiSpinner";
 import { compressImage } from "@/lib/image-compress";
 
 export function PhotoUploader({
@@ -71,7 +72,7 @@ export function PhotoUploader({
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
         >
-          {uploading ? <Loader2 size={14} className="weather-bar__spinner" /> : <Upload size={14} />}
+          {uploading ? <ToriiSpinner size={14} /> : <Upload size={14} />}
           {uploading ? "업로드 중…" : "사진 추가"}
         </button>
         <input

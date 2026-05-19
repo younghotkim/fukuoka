@@ -5,9 +5,11 @@ import {
   BookOpen,
   Check,
   Clock,
+  ExternalLink,
   Hotel,
   Luggage,
   Plane,
+  QrCode,
   ScrollText,
   X
 } from "lucide-react";
@@ -16,6 +18,10 @@ import type { VaultItem } from "@/lib/trip-vault";
 import { daysUntilExpiry, type Traveler, type TravelerBook } from "@/lib/travelers";
 
 const dismissKey = "yj-fukuoka-departure-dismissed-v1";
+const vjwKey = "yj-fukuoka-vjw-done-v1";
+const VJW_URL = "https://vjw-lp.digital.go.jp/ja/";
+
+type VjwState = { youngha: boolean; joonho: boolean };
 
 type Mode = "plan" | "today" | "vault" | "memories" | "ledger" | "recap";
 
@@ -25,7 +31,8 @@ type ReadinessRow = {
   label: string;
   status: "ok" | "warn" | "todo";
   detail: string;
-  cta?: { mode: Mode; label: string };
+  cta?: { mode: Mode; label: string } | { href: string; label: string; icon?: React.ReactNode };
+  toggles?: Array<{ key: keyof VjwState; label: string; done: boolean }>;
 };
 
 function daysBetween(fromIso: string, toIso: string): number {
@@ -54,13 +61,32 @@ export function DepartureWidget({
   onJump: (mode: Mode) => void;
 }) {
   const [dismissed, setDismissed] = useState(false);
+  const [vjw, setVjw] = useState<VjwState>({ youngha: false, joonho: false });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const stored = window.localStorage.getItem(dismissKey);
-    // Dismissal is keyed by trip start so a new trip would re-show it.
     if (stored === startIso) setDismissed(true);
+    const vjwStored = window.localStorage.getItem(vjwKey);
+    if (vjwStored) {
+      try {
+        const parsed = JSON.parse(vjwStored) as Partial<VjwState>;
+        setVjw({ youngha: Boolean(parsed.youngha), joonho: Boolean(parsed.joonho) });
+      } catch {
+        // ignore
+      }
+    }
   }, [startIso]);
+
+  const toggleVjw = (who: keyof VjwState) => {
+    setVjw((current) => {
+      const next = { ...current, [who]: !current[who] };
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(vjwKey, JSON.stringify(next));
+      }
+      return next;
+    });
+  };
 
   const dDays = daysBetween(todayIso, startIso);
 
@@ -122,6 +148,16 @@ export function DepartureWidget({
           ? "한 명만 첨부됨"
           : "입국 카드 미첨부";
 
+    const vjwDone = (vjw.youngha ? 1 : 0) + (vjw.joonho ? 1 : 0);
+    const vjwStatus: ReadinessRow["status"] =
+      vjwDone === 2 ? "ok" : vjwDone === 1 ? "warn" : "todo";
+    const vjwDetail =
+      vjwDone === 2
+        ? "둘 다 등록 완료"
+        : vjwDone === 1
+          ? "한 명만 등록됨"
+          : "도착 전 사전등록 필요";
+
     return [
       {
         key: "flight",
@@ -148,6 +184,18 @@ export function DepartureWidget({
         cta: passportStatus === "ok" ? undefined : { mode: "vault", label: "입력" }
       },
       {
+        key: "vjw",
+        icon: <QrCode size={14} />,
+        label: "Visit Japan Web",
+        status: vjwStatus,
+        detail: vjwDetail,
+        cta: { href: VJW_URL, label: "등록", icon: <ExternalLink size={11} /> },
+        toggles: [
+          { key: "youngha", label: "영하", done: vjw.youngha },
+          { key: "joonho", label: "준호", done: vjw.joonho }
+        ]
+      },
+      {
         key: "arrival",
         icon: <ScrollText size={14} />,
         label: "출입국심사서",
@@ -164,7 +212,7 @@ export function DepartureWidget({
         cta: packingStatus === "ok" ? undefined : { mode: "vault", label: "체크" }
       }
     ];
-  }, [packingItems, vaultItems, travelers]);
+  }, [packingItems, vaultItems, travelers, vjw]);
 
   // Only render when we're pre-trip (or on departure day itself).
   if (dDays < 0) return null;
@@ -214,26 +262,59 @@ export function DepartureWidget({
       </div>
 
       <ul className="departure__rows" role="list">
-        {rows.map((row) => (
-          <li key={row.key} className={`departure__row departure__row--${row.status}`}>
-            <span className="departure__row-icon" aria-hidden="true">
-              {row.status === "ok" ? <Check size={14} /> : row.icon}
-            </span>
-            <span className="departure__row-main">
-              <strong>{row.label}</strong>
-              <small>{row.detail}</small>
-            </span>
-            {row.cta && (
-              <button
-                type="button"
-                className="departure__row-cta"
-                onClick={() => onJump(row.cta!.mode)}
-              >
-                {row.cta.label} →
-              </button>
-            )}
-          </li>
-        ))}
+        {rows.map((row) => {
+          const isLinkCta = row.cta && "href" in row.cta;
+          return (
+            <li key={row.key} className={`departure__row departure__row--${row.status}`}>
+              <span className="departure__row-icon" aria-hidden="true">
+                {row.status === "ok" ? <Check size={14} /> : row.icon}
+              </span>
+              <span className="departure__row-main">
+                <strong>{row.label}</strong>
+                <small>{row.detail}</small>
+                {row.toggles && (
+                  <span className="departure__row-toggles">
+                    {row.toggles.map((t) => (
+                      <button
+                        key={t.key}
+                        type="button"
+                        className={
+                          t.done
+                            ? "departure__toggle departure__toggle--done"
+                            : "departure__toggle"
+                        }
+                        onClick={() => toggleVjw(t.key)}
+                        aria-pressed={t.done}
+                      >
+                        {t.done && <Check size={10} />}
+                        {t.label}
+                      </button>
+                    ))}
+                  </span>
+                )}
+              </span>
+              {row.cta && isLinkCta ? (
+                <a
+                  className="departure__row-cta departure__row-cta--ext"
+                  href={(row.cta as { href: string }).href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {row.cta.label}
+                  {(row.cta as { icon?: React.ReactNode }).icon}
+                </a>
+              ) : row.cta ? (
+                <button
+                  type="button"
+                  className="departure__row-cta"
+                  onClick={() => onJump((row.cta as { mode: Mode }).mode)}
+                >
+                  {row.cta.label} →
+                </button>
+              ) : null}
+            </li>
+          );
+        })}
       </ul>
     </section>
   );

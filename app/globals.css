@@ -8005,6 +8005,92 @@ a {
   box-shadow: 0 0 12px rgba(209, 44, 44, 0.3);
 }
 
+/* VJW external link CTA — external link icon next to label */
+.departure__row-cta--ext {
+  text-decoration: none;
+  gap: 6px;
+}
+
+/* Per-traveler VJW toggle pills */
+.departure__row-toggles {
+  display: inline-flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.departure__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 9px;
+  border: 1px solid rgba(209, 44, 44, 0.35);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-family: "Klee One", "Noto Sans JP", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.departure__toggle:hover {
+  border-color: var(--neon-pink);
+  color: var(--neon-pink);
+}
+
+.departure__toggle--done {
+  border-color: var(--neon-pink);
+  background: var(--neon-pink);
+  color: #fff;
+}
+
+.departure__toggle--done:hover {
+  background: var(--neon-red);
+  border-color: var(--neon-red);
+  color: #fff;
+}
+
+/* ============================== NOREN STRIPE ACCENT ============================== */
+/* Top noren-curtain peek on key cards — red+cream alternating stripes,
+   like the entrance fabric on an izakaya. */
+.departure::before,
+.route-head::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 14px;
+  right: 14px;
+  height: 4px;
+  border-radius: 0 0 2px 2px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--neon-pink) 0 22px,
+      #faf2e1 22px 26px,
+      var(--neon-pink) 26px 48px,
+      #faf2e1 48px 52px
+    );
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+/* ============================== TORII SPINNER ============================== */
+.torii-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  animation: torii-spin 1.2s linear infinite;
+}
+
+@keyframes torii-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .departure__row--warn .departure__row-cta {
   border-color: rgba(217, 162, 58, 0.45);
   background: rgba(217, 162, 58, 0.1);
