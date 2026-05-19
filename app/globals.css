@@ -441,7 +441,7 @@ a {
 
 .workspace-tab--active {
   border-color: var(--neon-pink);
-  background: linear-gradient(135deg, rgba(209, 44, 44, 0.28), rgba(209, 44, 44, 0.12));
+  background: var(--neon-pink);
   color: #fff;
 }
 
@@ -528,12 +528,11 @@ a {
 .day-pill--active,
 .filter-chip--active {
   border-color: var(--neon-pink);
-  background:
-    linear-gradient(135deg, rgba(209, 44, 44, 0.26), rgba(209, 44, 44, 0.12) 65%);
+  background: var(--neon-pink);
   color: #ffffff;
   box-shadow:
-    0 0 10px rgba(209, 44, 44, 0.28),
-    inset 0 1px 0 rgba(70, 40, 20, 0.02);
+    0 2px 8px rgba(209, 44, 44, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .day-pill--active strong {
@@ -553,11 +552,11 @@ a {
 }
 
 .route-head::after {
-  content: "夜市";
+  content: "屋台";
   position: absolute;
   right: 14px;
   bottom: -28px;
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: "Shippori Mincho", "Noto Serif JP", serif;
   font-weight: 900;
   font-size: 120px;
   line-height: 1;
@@ -574,16 +573,16 @@ a {
   font-weight: 900;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  text-shadow: 0 0 4px rgba(209, 44, 44, 0.35);
+  text-shadow: none;
 }
 
 .route-head h1 {
   margin: 0;
-  font-family: "Noto Sans JP", Inter, sans-serif;
+  font-family: "Shippori Mincho", "Noto Serif JP", serif;
   font-size: 26px;
   font-weight: 900;
   line-height: 1.2;
-  color: #fff;
+  color: var(--ink);
   position: relative;
   z-index: 1;
 }
@@ -653,8 +652,7 @@ a {
 .stop-row--active {
   border-color: var(--neon-pink);
   background:
-    linear-gradient(90deg, rgba(209, 44, 44, 0.18), rgba(209, 44, 44, 0.08) 60%),
-    rgba(255, 251, 242, 0.92);
+    linear-gradient(90deg, rgba(209, 44, 44, 0.10), rgba(255, 251, 242, 0.92) 60%);
   box-shadow:
     0 12px 26px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(70, 40, 20, 0.08);
@@ -669,7 +667,7 @@ a {
 }
 
 .stop-row--active .stop-row__time {
-  color: #fff;
+  color: var(--neon-pink);
 }
 
 .stop-row__main {
@@ -924,9 +922,8 @@ a {
 }
 
 .segment--active {
-  border-color: var(--neon-cyan);
-  background:
-    linear-gradient(180deg, rgba(209, 44, 44, 0.18), rgba(209, 44, 44, 0.06));
+  border-color: var(--neon-pink);
+  background: var(--neon-pink);
   color: #fff;
 }
 
