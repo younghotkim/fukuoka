@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Loader2, Trash2, Upload } from "lucide-react";
 import { useConfirm } from "./ConfirmProvider";
 import { PhotoLightbox } from "./PhotoLightbox";
+import { compressImage } from "@/lib/image-compress";
 
 export function PhotoUploader({
   stopId,
@@ -26,8 +27,9 @@ export function PhotoUploader({
     const uploaded: string[] = [];
     try {
       for (const file of Array.from(files)) {
+        const compressed = await compressImage(file).catch(() => file);
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append("file", compressed);
         formData.append("stopId", stopId);
         const response = await fetch("/api/upload", {
           method: "POST",

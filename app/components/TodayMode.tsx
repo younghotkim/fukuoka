@@ -25,6 +25,7 @@ import { GpsAutoStatus } from "./GpsAutoStatus";
 import { NearbyPlaces } from "./NearbyPlaces";
 import { PhotoLightbox } from "./PhotoLightbox";
 import { useItineraryContext } from "./ItineraryContext";
+import { compressImage } from "@/lib/image-compress";
 import {
   categoryColors,
   categoryLabels,
@@ -100,8 +101,9 @@ function CompactCapture({
     const uploaded: string[] = [];
     try {
       for (const file of Array.from(files)) {
+        const compressed = await compressImage(file).catch(() => file);
         const fd = new FormData();
-        fd.append("file", file);
+        fd.append("file", compressed);
         fd.append("stopId", stop.id);
         const res = await fetch("/api/upload", { method: "POST", body: fd });
         if (!res.ok) break;
