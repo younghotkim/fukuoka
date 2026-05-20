@@ -3,6 +3,7 @@ import "./globals.css";
 import { ConfirmProvider } from "./components/ConfirmProvider";
 import { PinGate } from "./components/PinGate";
 import { PwaRegister } from "./components/PwaRegister";
+import { TranslateFab } from "./components/TranslateFab";
 
 export const metadata: Metadata = {
   title: "Y&J Fukuoka · 博多 屋台 Trip Diary",
@@ -31,7 +32,10 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <PinGate>
-          <ConfirmProvider>{children}</ConfirmProvider>
+          <ConfirmProvider>
+            {children}
+            <TranslateFab />
+          </ConfirmProvider>
         </PinGate>
         <PwaRegister />
       </body>
