@@ -242,9 +242,13 @@ OUTPUT FORMAT — return STRICT JSON, no markdown fences, no commentary:
 }
 
 ALT RULES:
-- Provide 1–2 alternate phrasings only when they offer a meaningfully different register or angle.
-- Each alt is an OBJECT, not a string. When the target is Japanese, EVERY alt MUST include a "meaning"
-  field with the literal Korean meaning so the speaker knows what they're saying.
+- Provide 1–2 alternates ONLY if they offer a meaningfully different register, vocabulary,
+  or angle. If you cannot produce something genuinely different, return [] (empty array).
+- NEVER include an alt that is identical, near-identical, or a trivial reordering of the
+  main "translation" or of another alt. Different particles/honorific levels = OK.
+  Same sentence with one synonym swap = NOT ok.
+- Each alt is an OBJECT, not a string. When the target is Japanese, EVERY alt MUST include
+  a "meaning" field with the literal Korean meaning so the speaker knows what they're saying.
 `.trim();
 }
 

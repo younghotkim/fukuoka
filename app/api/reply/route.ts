@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  buildSystemPrompt,
-  buildUserMessage,
-  isDirection,
-  isTone,
-  type TranslateRequest,
-  type TranslateResponse
-} from "@/lib/translate";
+  buildReplySystemPrompt,
+  buildReplyUserMessage,
+  isReplySuggestion,
+  type ReplyRequest,
+  type ReplyResponse,
+  type ReplySuggestion
+} from "@/lib/reply";
+import { isTone } from "@/lib/translate";
 
 export const runtime = "nodejs";
 
-// gpt-5.4-mini: $0.75 / $4.50 per 1M tokens, 400k context, strong KO↔JA.
 const MODEL = process.env.OPENAI_TRANSLATE_MODEL ?? "gpt-5.4-mini";
 const API_URL = "https://api.openai.com/v1/chat/completions";
 
@@ -19,21 +19,16 @@ type OpenAIResponse = {
   error?: { message?: string };
 };
 
-const TTL_MS = 10 * 60 * 1000;
-const CACHE_MAX = 200;
-const cache = new Map<string, { at: number; body: TranslateResponse }>();
+const TTL_MS = 5 * 60 * 1000;
+const CACHE_MAX = 80;
+const cache = new Map<string, { at: number; body: ReplyResponse }>();
 
-function cacheKey(req: TranslateRequest) {
-  return `${req.direction}|${req.tone}|${req.text}|${req.context ?? ""}`;
+function cacheKey(req: ReplyRequest) {
+  return `${req.tone}|${req.heard}`;
 }
 
 function pruneCache() {
   if (cache.size <= CACHE_MAX) return;
-  const cutoff = Date.now() - TTL_MS;
-  for (const [k, v] of cache) {
-    if (v.at < cutoff) cache.delete(k);
-    if (cache.size <= CACHE_MAX) break;
-  }
   while (cache.size > CACHE_MAX) {
     const oldest = cache.keys().next().value;
     if (!oldest) break;
@@ -59,60 +54,34 @@ function parseJsonLoose(raw: string): unknown {
   }
 }
 
-// Normalize whitespace and punctuation for dedup comparison. Drops trailing
-// sentence enders (？?。.) and collapses whitespace so "もう一軒行く？" and
-// "もう一軒行く?" collide.
 function dedupKey(s: string): string {
-  return s
-    .normalize("NFKC")
-    .toLowerCase()
-    .replace(/[\s　]+/g, "")
-    .replace(/[?？。.！!、,~〜]+$/g, "");
+  return s.normalize("NFKC").toLowerCase().replace(/[\s　]+/g, "").replace(/[?？。.！!、,~〜]+$/g, "");
 }
 
-function normalize(parsed: unknown): TranslateResponse | null {
+function normalize(parsed: unknown): ReplyResponse | null {
   if (!parsed || typeof parsed !== "object") return null;
   const obj = parsed as Record<string, unknown>;
-  const translation = typeof obj.translation === "string" ? obj.translation.trim() : "";
-  if (!translation) return null;
-  const altRaw = Array.isArray(obj.alt) ? obj.alt : [];
-  // Accept either the new object form {text, meaning} or fall back to strings
-  // for resilience against older model outputs.
-  const seen = new Set<string>([dedupKey(translation)]);
-  const alt = altRaw
-    .map((entry) => {
-      if (typeof entry === "string") {
-        const text = entry.trim();
-        return text ? { text } : null;
-      }
-      if (entry && typeof entry === "object") {
-        const e = entry as Record<string, unknown>;
-        const text = typeof e.text === "string" ? e.text.trim() : "";
-        if (!text) return null;
-        const meaning = typeof e.meaning === "string" && e.meaning.trim() ? e.meaning.trim() : undefined;
-        return { text, meaning };
-      }
-      return null;
-    })
-    .filter((v): v is { text: string; meaning?: string } => v !== null)
-    // Drop alts that collide with the main translation or with a prior alt.
-    .filter((v) => {
-      const k = dedupKey(v.text);
+  const heardMeaning = typeof obj.heardMeaning === "string" ? obj.heardMeaning.trim() : "";
+  const arr = Array.isArray(obj.suggestions) ? obj.suggestions : [];
+  const seen = new Set<string>();
+  const cleaned: ReplySuggestion[] = arr
+    .filter(isReplySuggestion)
+    .map((s) => ({
+      ja: s.ja.trim(),
+      meaning: (s.meaning ?? "").trim(),
+      hangulReading: s.hangulReading.trim(),
+      romaji: s.romaji.trim(),
+      angle: s.angle.trim()
+    }))
+    .filter((s) => {
+      const k = dedupKey(s.ja);
       if (seen.has(k)) return false;
       seen.add(k);
       return true;
     })
-    .slice(0, 3);
-  return {
-    translation,
-    romaji: typeof obj.romaji === "string" && obj.romaji.trim() ? obj.romaji.trim() : undefined,
-    hangulReading:
-      typeof obj.hangulReading === "string" && obj.hangulReading.trim()
-        ? obj.hangulReading.trim()
-        : undefined,
-    alt: alt.length > 0 ? alt : undefined,
-    note: typeof obj.note === "string" ? obj.note.trim() : undefined
-  };
+    .slice(0, 4);
+  if (cleaned.length === 0) return null;
+  return { heardMeaning, suggestions: cleaned };
 }
 
 export async function POST(request: NextRequest) {
@@ -134,24 +103,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "잘못된 요청 본문입니다." }, { status: 400 });
   }
   const body = raw as Record<string, unknown>;
-  const text = typeof body.text === "string" ? body.text.trim() : "";
-  const direction = body.direction;
+  const heard = typeof body.heard === "string" ? body.heard.trim() : "";
   const tone = body.tone;
-  const context = typeof body.context === "string" ? body.context : undefined;
 
-  if (!text) return NextResponse.json({ message: "번역할 문장이 비어 있습니다." }, { status: 400 });
-  if (text.length > 800) {
-    return NextResponse.json({ message: "한 번에 800자까지만 보낼 수 있어요." }, { status: 400 });
+  if (!heard) {
+    return NextResponse.json({ message: "그녀가 한 말이 비어 있어요." }, { status: 400 });
   }
-  if (!isDirection(direction)) {
-    return NextResponse.json({ message: "방향(direction)이 잘못됐습니다." }, { status: 400 });
+  if (heard.length > 600) {
+    return NextResponse.json({ message: "600자까지만 보낼 수 있어요." }, { status: 400 });
   }
   if (!isTone(tone)) {
     return NextResponse.json({ message: "톤(tone)이 잘못됐습니다." }, { status: 400 });
   }
 
-  const req: TranslateRequest = { text, direction, tone, context };
-
+  const req: ReplyRequest = { heard, tone };
   const key = cacheKey(req);
   const hit = cache.get(key);
   if (hit && Date.now() - hit.at < TTL_MS) {
@@ -168,11 +133,11 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         model: MODEL,
         messages: [
-          { role: "system", content: buildSystemPrompt(req) },
-          { role: "user", content: buildUserMessage(req) }
+          { role: "system", content: buildReplySystemPrompt(req) },
+          { role: "user", content: buildReplyUserMessage(req) }
         ],
         response_format: { type: "json_object" },
-        max_completion_tokens: 600
+        max_completion_tokens: 900
       })
     });
 
@@ -192,7 +157,7 @@ export async function POST(request: NextRequest) {
     const normalized = normalize(parsed);
     if (!normalized) {
       return NextResponse.json(
-        { message: "번역 결과를 파싱하지 못했어요.", raw: content },
+        { message: "답장 추천을 파싱하지 못했어요.", raw: content },
         { status: 502 }
       );
     }
