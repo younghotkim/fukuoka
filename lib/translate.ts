@@ -28,11 +28,16 @@ export type TranslateRequest = {
   context?: string; // optional free-text situational hint
 };
 
+export type AltPhrasing = {
+  text: string;     // alternate phrasing in the TARGET language
+  meaning?: string; // literal Korean meaning, only relevant when target is ja
+};
+
 export type TranslateResponse = {
   translation: string;          // primary output, target language
   romaji?: string;              // when target is ja, hepburn-ish romaji for reading
   hangulReading?: string;       // when target is ja, 한글로 발음 표기 (읽기용)
-  alt?: string[];               // 1–2 alternates with slightly different tone
+  alt?: AltPhrasing[];          // 1–2 alternates with slightly different tone
   note?: string;                // short cultural/nuance note (~1 line, can be empty)
 };
 
@@ -227,9 +232,19 @@ OUTPUT FORMAT — return STRICT JSON, no markdown fences, no commentary:
   "translation": "<the main translated sentence in the TARGET language>",
   "romaji": "<hepburn romaji, only if target is Japanese; otherwise omit>",
   "hangulReading": "<한글 발음, only if target is Japanese; otherwise omit>",
-  "alt": ["<optional 1–2 alternate phrasings with a slightly different register>"],
+  "alt": [
+    {
+      "text": "<alternate phrasing in the TARGET language>",
+      "meaning": "<literal Korean meaning of this alternate, ONLY when target is Japanese; omit otherwise>"
+    }
+  ],
   "note": "<≤1 short line: cultural nuance, softening you applied, or '' if none>"
 }
+
+ALT RULES:
+- Provide 1–2 alternate phrasings only when they offer a meaningfully different register or angle.
+- Each alt is an OBJECT, not a string. When the target is Japanese, EVERY alt MUST include a "meaning"
+  field with the literal Korean meaning so the speaker knows what they're saying.
 `.trim();
 }
 

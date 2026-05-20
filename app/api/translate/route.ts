@@ -65,10 +65,24 @@ function normalize(parsed: unknown): TranslateResponse | null {
   const translation = typeof obj.translation === "string" ? obj.translation.trim() : "";
   if (!translation) return null;
   const altRaw = Array.isArray(obj.alt) ? obj.alt : [];
+  // Accept either the new object form {text, meaning} or fall back to strings
+  // for resilience against older model outputs.
   const alt = altRaw
-    .filter((v): v is string => typeof v === "string")
-    .map((v) => v.trim())
-    .filter(Boolean)
+    .map((entry) => {
+      if (typeof entry === "string") {
+        const text = entry.trim();
+        return text ? { text } : null;
+      }
+      if (entry && typeof entry === "object") {
+        const e = entry as Record<string, unknown>;
+        const text = typeof e.text === "string" ? e.text.trim() : "";
+        if (!text) return null;
+        const meaning = typeof e.meaning === "string" && e.meaning.trim() ? e.meaning.trim() : undefined;
+        return { text, meaning };
+      }
+      return null;
+    })
+    .filter((v): v is { text: string; meaning?: string } => v !== null)
     .slice(0, 3);
   return {
     translation,

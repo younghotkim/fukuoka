@@ -61,6 +61,7 @@ function normalize(parsed: unknown): SuggestResponse | null {
     .filter(isSuggestion)
     .map((s) => ({
       ja: s.ja.trim(),
+      meaning: (s.meaning ?? "").trim(),
       hangulReading: s.hangulReading.trim(),
       romaji: s.romaji.trim(),
       reason: s.reason.trim()

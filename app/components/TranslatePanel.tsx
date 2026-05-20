@@ -589,17 +589,22 @@ export function TranslatePanel({ open, onClose }: Props) {
                 <ul>
                   {translateResult.alt.map((a, i) => (
                     <li key={i}>
-                      <span>{a}</span>
+                      <span className="translate-alts__body">
+                        <span className="translate-alts__text">{a.text}</span>
+                        {a.meaning && pair.tgt === "ja" && (
+                          <span className="translate-alts__meaning">{a.meaning}</span>
+                        )}
+                      </span>
                       <span className="translate-alts__btns">
                         {supportsTts && (
                           <button
-                            onClick={() => playTts(`alt-${i}`, a, pair.tgt)}
+                            onClick={() => playTts(`alt-${i}`, a.text, pair.tgt)}
                             className={speakingTtsKey === `alt-${i}` ? "is-on" : undefined}
                           >
                             <Volume2 size={12} />
                           </button>
                         )}
-                        <button onClick={() => copy(`alt-${i}`, a)}>
+                        <button onClick={() => copy(`alt-${i}`, a.text)}>
                           {copied === `alt-${i}` ? <Check size={12} /> : <Copy size={12} />}
                         </button>
                       </span>
@@ -657,6 +662,9 @@ function SuggestionCard({
         <span className="translate-sugg__reason">{suggestion.reason}</span>
       </header>
       <p className="translate-sugg__ja">{suggestion.ja}</p>
+      {suggestion.meaning && (
+        <p className="translate-sugg__meaning">“{suggestion.meaning}”</p>
+      )}
       {suggestion.hangulReading && (
         <p className="translate-sugg__hangul">{suggestion.hangulReading}</p>
       )}

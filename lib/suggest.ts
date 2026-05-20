@@ -11,9 +11,10 @@ export type SuggestRequest = {
 
 export type Suggestion = {
   ja: string;
+  meaning: string;       // literal Korean meaning of `ja` — what you're saying
   hangulReading: string;
   romaji: string;
-  reason: string; // ≤ ~30 chars, Korean, explains the angle
+  reason: string;        // ≤ ~30 chars, Korean, explains the angle / why it works
 };
 
 export type SuggestResponse = {
@@ -81,15 +82,18 @@ TONE NOTES: ${tone}
 
 For each suggestion provide:
 - "ja": the Japanese phrase, spoken length (typically 6–20 chars).
+- "meaning": LITERAL Korean translation of the JA phrase. The speaker has to know
+  what they are actually saying. Keep it natural Korean, same register as the JA.
 - "hangulReading": Korean Hangul phonetic reading of the JA (for a Korean speaker to read aloud).
 - "romaji": Hepburn romaji, lowercase, spaces between words.
 - "reason": ONE short line in KOREAN (≤ 30 chars) explaining the angle / why this works
-  in the described situation. Examples: "관심사 깊이 묻기 / 다음 만남 자연스러운 빌미 / 분위기 환기"
+  in the described situation. NOT the meaning — the *strategy* behind picking this line.
+  Examples: "관심사 깊이 묻기 / 다음 만남 자연스러운 빌미 / 분위기 환기"
 
 OUTPUT FORMAT — return STRICT JSON, no markdown fences, no commentary:
 {
   "suggestions": [
-    { "ja": "...", "hangulReading": "...", "romaji": "...", "reason": "..." },
+    { "ja": "...", "meaning": "...", "hangulReading": "...", "romaji": "...", "reason": "..." },
     ...
   ]
 }
@@ -109,6 +113,8 @@ export function isSuggestion(value: unknown): value is Suggestion {
     obj.ja.trim().length > 0 &&
     typeof obj.hangulReading === "string" &&
     typeof obj.romaji === "string" &&
-    typeof obj.reason === "string"
+    typeof obj.reason === "string" &&
+    // "meaning" was added later — tolerate older responses by allowing string|undefined
+    (obj.meaning === undefined || typeof obj.meaning === "string")
   );
 }
