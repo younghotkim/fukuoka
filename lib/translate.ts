@@ -50,6 +50,67 @@ export const toneMeta: Record<TonePreset, { label: string; hint: string; emoji: 
   compliment: { label: "칭찬", hint: "외모·스타일·취향", emoji: "✨" }
 };
 
+// Korean example phrases per tone — shown as chips that fill the input on tap.
+// Curated for two Korean men socializing with Japanese women (20s–30s) in Fukuoka.
+// Goal: realistic starting points the user can lightly edit before translating.
+export const toneExamples: Record<TonePreset, string[]> = {
+  icebreaker: [
+    "여기 분위기 좋네요",
+    "이 가게 어떻게 알게 됐어요?",
+    "혹시 후쿠오카 자주 오세요?"
+  ],
+  compliment: [
+    "스타일이 진짜 좋으세요",
+    "웃는 게 너무 예뻐요",
+    "그 가방 어디 거예요?"
+  ],
+  "flirt-soft": [
+    "오늘 같이 있어서 재밌었어요",
+    "또 만나고 싶은데 다음에 시간 되세요?",
+    "분위기 너무 좋으시네"
+  ],
+  "flirt-bold": [
+    "연락처 물어봐도 돼요?",
+    "솔직히 첫인상 너무 좋았어요",
+    "다음엔 단둘이 만나요"
+  ],
+  playful: [
+    "그렇게 웃으면 반칙이지",
+    "내가 한국에서 제일 잘생긴 줄 알았는데 여기 와서 졌어",
+    "그래서 결론은 한 잔 더?"
+  ],
+  barhop: [
+    "건배! 오늘 진짜 좋다",
+    "이 술 처음 마셔봐요, 추천 좀",
+    "안주 뭐가 맛있어요?"
+  ],
+  afterparty: [
+    "2차 가실래요?",
+    "근처에 라멘 맛집 알아요, 같이 가요",
+    "노래방 콜?"
+  ],
+  casual: [
+    "오늘 진짜 즐거웠어",
+    "내일 뭐 해?",
+    "사진 한 장 같이 찍어도 돼?"
+  ],
+  polite: [
+    "주문 하나 더 부탁드려요",
+    "화장실 어디 있어요?",
+    "계산 부탁드립니다"
+  ],
+  apology: [
+    "방금 그건 미안해요",
+    "취해서 실수했어요, 죄송",
+    "오해 풀고 싶어요"
+  ],
+  urgent: [
+    "지갑을 잃어버렸어요",
+    "여기가 어디예요? 길을 잃었어요",
+    "도와주세요, 친구가 아파요"
+  ]
+};
+
 // Ordered for UI display (most situational first for the FAB context).
 export const toneOrder: TonePreset[] = [
   "icebreaker",
