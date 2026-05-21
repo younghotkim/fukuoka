@@ -23,8 +23,8 @@ export type SuggestResponse = {
 
 const sharedContext = `
 SPEAKER PROFILE:
-- Two Korean men, late 20s–early 30s, on a short Fukuoka trip.
-- They are socializing with Japanese women in their 20s–30s (MZ generation).
+- Two Korean friends, late 20s–early 30s, on a short Fukuoka trip.
+- They're mingling with local Japanese company in their 20s–30s (MZ generation).
 - Friendly, modern, respectful. Never creepy, pushy, or sleazy.
 - They want suggestions that sound like an actual native young person —
   not textbook keigo, not anime cosplay, not boomer Japanese.
@@ -46,10 +46,10 @@ const toneInstruction: Record<TonePreset, string> = {
     "First-contact register. Light, warm, not pickup-y. Small observation or " +
     "casual question. Mostly タメ口 with 〜ね/〜かな.",
   "flirt-soft":
-    "Indirect interest — compliment, curiosity, shared-vibe comment. MZ casual, " +
-    "playful, leaves space for her to engage or not.",
+    "Warm, indirect interest — compliment, curiosity, shared-vibe comment. MZ casual, " +
+    "playful, leaves space for them to engage or not.",
   "flirt-bold":
-    "Direct interest, still classy & self-aware. Confident, short, never aggressive. " +
+    "Direct expression of interest, still classy & self-aware. Confident, short, never aggressive. " +
     "Soften anything too forward and note it.",
   barhop:
     "Izakaya/bar energy. Casual タメ口 with current MZ slang (やばい, 〜じゃん, " +
@@ -62,8 +62,8 @@ const toneInstruction: Record<TonePreset, string> = {
     "fine. Funny > cool.",
   apology: "Sincere, not heavy. Acknowledge, offer to fix, short.",
   compliment:
-    "Specific, grounded compliment — style, taste, vibe, the way she chose this spot. " +
-    "Anchor to something she chose (outfit, hair color), not body."
+    "Specific, grounded compliment — style, taste, vibe, the way they chose this spot. " +
+    "Anchor to something they chose (outfit, hair color), not body."
 };
 
 export function buildSuggestSystemPrompt(req: SuggestRequest): string {

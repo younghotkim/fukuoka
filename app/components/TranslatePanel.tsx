@@ -432,7 +432,7 @@ export function TranslatePanel({ open, onClose }: Props) {
   const inputLabel =
     mode === "translate" ? `원문 (${langLabel[pair.src]})` :
     mode === "suggest" ? "상황 설명" :
-    mode === "reply" ? "그녀가 한 말 (일본어)" :
+    mode === "reply" ? "들은 말 (일본어)" :
     "";
 
   const inputPlaceholder =
@@ -441,9 +441,9 @@ export function TranslatePanel({ open, onClose }: Props) {
         ? "여기에 한국어를 적거나 🎙️을 눌러 말하세요"
         : "여기에 일본어를 입력하거나 🎙️을 눌러 말하세요"
       : mode === "suggest"
-      ? "어떤 상황인지 자세히 적어주세요\n예: 텐진 이자카야에서 합석함. 그녀가 사진작가라고 했고 분위기 좋음. 자연스럽게 관심 표현하고 싶음"
+      ? "어떤 상황인지 자세히 적어주세요\n예: 텐진 이자카야에서 일행과 합석함. 사진 얘기로 분위기 좋음. 자연스럽게 대화 이어가고 싶음"
       : mode === "reply"
-      ? "그녀가 한 일본어를 적거나 🎙️을 눌러 그녀가 말할 때 녹음하세요\n예: もう一軒行きませんか?"
+      ? "들은 일본어를 적거나 🎙️을 눌러 상대가 말할 때 녹음하세요\n예: もう一軒行きませんか?"
       : "";
 
   const submitLabel =
@@ -511,7 +511,7 @@ export function TranslatePanel({ open, onClose }: Props) {
         )}
         {mode === "reply" && (
           <div className="translate-direction translate-direction--suggest">
-            <span className="translate-direction__lang">그녀의 말 (日本語)</span>
+            <span className="translate-direction__lang">들은 말 (日本語)</span>
             <span className="translate-direction__arrow">→</span>
             <span className="translate-direction__lang translate-direction__lang--tgt">日本語 답장 3-4개</span>
           </div>
@@ -606,7 +606,7 @@ export function TranslatePanel({ open, onClose }: Props) {
                 <input
                   value={context}
                   onChange={(event) => setContext(event.target.value)}
-                  placeholder="예: 텐진 이자카야, 방금 합석함, 그녀가 사진작가라고 했음"
+                  placeholder="예: 텐진 이자카야, 방금 합석함, 사진 얘기 중"
                   maxLength={240}
                 />
               </details>
@@ -700,7 +700,7 @@ export function TranslatePanel({ open, onClose }: Props) {
           <div className="translate-replies">
             {replyResult.heardMeaning && (
               <div className="translate-heard">
-                <em>그녀의 말 의미</em>
+                <em>들은 말 의미</em>
                 <p>“{replyResult.heardMeaning}”</p>
               </div>
             )}

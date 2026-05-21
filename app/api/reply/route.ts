@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
   const tone = body.tone;
 
   if (!heard) {
-    return NextResponse.json({ message: "그녀가 한 말이 비어 있어요." }, { status: 400 });
+    return NextResponse.json({ message: "들은 말이 비어 있어요." }, { status: 400 });
   }
   if (heard.length > 600) {
     return NextResponse.json({ message: "600자까지만 보낼 수 있어요." }, { status: 400 });

@@ -1,6 +1,6 @@
 // Domain types & prompt builder for the Claude Haiku-backed translator.
-// Designed for a Korean ↔ Japanese travel/회화 use case where two Korean guys
-// are hanging out with Japanese women in their 20s–30s in Fukuoka.
+// Designed for a Korean ↔ Japanese travel/회화 use case — two Korean friends
+// on a short Fukuoka trip, mingling with local company their own age.
 
 export type LangCode = "ko" | "ja";
 
@@ -9,15 +9,15 @@ export type TonePreset =
   | "polite"        // 정중한 존댓말 — 가게 직원, 처음 보는 사람
   | "casual"        // 친근한 반말+타메구치 섞임 — 친해진 뒤
   | "urgent"        // 다급/도움 요청 — 길 잃음, 아픔, 분실
-  // 일본 여성 친구들과의 시나리오 (MZ-leaning)
+  // 현지 일행과의 시나리오 (MZ-leaning)
   | "icebreaker"    // 첫 인사·말걸기 — 가볍고 부담 없게, 살짝 위트
-  | "flirt-soft"    // 호감 표현(은근) — 들이대지 않는 선, 칭찬 위주
-  | "flirt-bold"    // 호감 표현(직접) — 가벼운 작업, 매너 유지
+  | "flirt-soft"    // 부드러운 친근감 — 들이대지 않는 선, 칭찬 위주
+  | "flirt-bold"    // 솔직한 표현 — 의사 표현은 분명히, 매너 유지
   | "barhop"        // 술자리·이자카야 — 텐션 있게, MZ 슬랭 ok
-  | "afterparty"    // 2차/3차 제안 — 권유 톤, 강요X
+  | "afterparty"    // 다음 장소 제안 — 권유 톤, 강요X
   | "playful"       // 장난스러운 농담 — 분위기 풀 때
   | "apology"       // 사과·수습 — 진지함 + 가벼움 조절
-  | "compliment";   // 칭찬 — 외모·스타일·취향 부담스럽지 않게
+  | "compliment";   // 칭찬 — 스타일·취향 부담스럽지 않게
 
 export type Direction = `${LangCode}->${LangCode}`;
 
@@ -46,18 +46,17 @@ export const toneMeta: Record<TonePreset, { label: string; hint: string; emoji: 
   casual: { label: "친근", hint: "친해진 사이 · 반말 섞임", emoji: "🙂" },
   urgent: { label: "다급", hint: "길 잃음·아픔·분실", emoji: "🆘" },
   icebreaker: { label: "말걸기", hint: "첫 인사·자연스럽게", emoji: "👋" },
-  "flirt-soft": { label: "은근호감", hint: "선 넘지 않게, 칭찬 위주", emoji: "🌸" },
-  "flirt-bold": { label: "직접호감", hint: "가볍게 작업, 매너 유지", emoji: "💘" },
+  "flirt-soft": { label: "분위기", hint: "부드럽게·친근하게", emoji: "🌸" },
+  "flirt-bold": { label: "솔직히", hint: "솔직한 표현·매너 유지", emoji: "💬" },
   barhop: { label: "이자카야", hint: "술자리 텐션·MZ 슬랭 ok", emoji: "🍶" },
-  afterparty: { label: "2차제안", hint: "다음 장소 권유 (강요X)", emoji: "🎵" },
+  afterparty: { label: "다음일정", hint: "다음 장소·일정 제안", emoji: "🎵" },
   playful: { label: "장난", hint: "농담·분위기 풀기", emoji: "😜" },
   apology: { label: "사과", hint: "수습·매너 회복", emoji: "🙏" },
-  compliment: { label: "칭찬", hint: "외모·스타일·취향", emoji: "✨" }
+  compliment: { label: "칭찬", hint: "스타일·취향·센스", emoji: "✨" }
 };
 
 // Korean example phrases per tone — shown as chips that fill the input on tap.
-// Curated for two Korean men socializing with Japanese women (20s–30s) in Fukuoka.
-// Goal: realistic starting points the user can lightly edit before translating.
+// Realistic starting points the user can lightly edit before translating.
 export const toneExamples: Record<TonePreset, string[]> = {
   icebreaker: [
     "여기 분위기 좋네요",
@@ -65,23 +64,23 @@ export const toneExamples: Record<TonePreset, string[]> = {
     "혹시 후쿠오카 자주 오세요?"
   ],
   compliment: [
-    "스타일이 진짜 좋으세요",
-    "웃는 게 너무 예뻐요",
+    "스타일이 진짜 좋으시네요",
+    "센스가 남다르세요",
     "그 가방 어디 거예요?"
   ],
   "flirt-soft": [
-    "오늘 같이 있어서 재밌었어요",
-    "또 만나고 싶은데 다음에 시간 되세요?",
-    "분위기 너무 좋으시네"
+    "오늘 같이 시간 보내서 즐거웠어요",
+    "다음에 또 같이 가고 싶어요",
+    "분위기가 잘 맞으시네요"
   ],
   "flirt-bold": [
-    "연락처 물어봐도 돼요?",
-    "솔직히 첫인상 너무 좋았어요",
-    "다음엔 단둘이 만나요"
+    "연락처 여쭤봐도 될까요?",
+    "솔직히 만나서 정말 반가웠어요",
+    "다음에 또 봐요"
   ],
   playful: [
-    "그렇게 웃으면 반칙이지",
-    "내가 한국에서 제일 잘생긴 줄 알았는데 여기 와서 졌어",
+    "그렇게 잘 웃으시면 분위기 살죠",
+    "한국에선 몰랐는데 여기 분위기 너무 좋네요",
     "그래서 결론은 한 잔 더?"
   ],
   barhop: [
@@ -145,10 +144,10 @@ export function isTone(value: unknown): value is TonePreset {
 
 const sharedContext = `
 SPEAKER PROFILE:
-- Two Korean men in their late 20s–early 30s, on a short Fukuoka trip (May 2026).
-- They are socializing with Japanese women roughly the same age (20s–30s, MZ generation).
-- They are friendly, respectful, modern. They are NOT trying to be creepy, pushy, or sleazy.
-- They are casual MZ-style speakers in Korean. They want the Japanese to sound natural, current,
+- Two Korean friends in their late 20s–early 30s, on a short Fukuoka trip (May 2026).
+- They're mingling with local Japanese company roughly the same age (20s–30s, MZ generation).
+- Friendly, respectful, modern. Never creepy, pushy, or sleazy.
+- Casual MZ-style speakers in Korean. They want the Japanese to sound natural, current,
   age-appropriate — not textbook-stiff, not anime-cringe, not overly old-fashioned keigo unless
   the situation calls for it.
 
@@ -172,17 +171,17 @@ const toneInstruction: Record<TonePreset, string> = {
     "to act on. Include the core ask first.",
   icebreaker:
     "First-contact line in a bar/cafe/club/street. Light, warm, not pickup-y. A gentle opener " +
-    "a 20s–30s Japanese woman would find natural — maybe a small situational observation or " +
+    "a 20s–30s local would find natural — maybe a small situational observation or " +
     "a casual question. Mostly タメ口 with soft sentence-end particles (〜ね, 〜かな). " +
-    "Never start with 「ナンパ」-style cringe.",
+    "Avoid pickup-line cringe.",
   "flirt-soft":
-    "Express interest indirectly — through a compliment, curiosity, or a shared-vibe comment. " +
-    "Think MZ Japanese social tone: casual, slightly playful, leaving space for her to engage " +
+    "Express warm interest indirectly — through a compliment, curiosity, or a shared-vibe comment. " +
+    "Think MZ Japanese social tone: casual, slightly playful, leaving space for them to engage " +
     "or not. No physical descriptors beyond face/style/aura. Never pushy. " +
     "End with something open-ended, not a demand.",
   "flirt-bold":
-    "More direct interest, but still classy and self-aware. A confident MZ tone that owns the " +
-    "intent (e.g., 連絡先聞いてもいい?, また会いたい). Keep it short, light, never aggressive. " +
+    "More direct expression of interest, but still classy and self-aware. A confident MZ tone that " +
+    "owns the intent (e.g., 連絡先聞いてもいい?, また会いたい). Keep it short, light, never aggressive. " +
     "If the Korean input is too forward, soften it and note the adjustment.",
   barhop:
     "Izakaya/bar energy. Casual タメ口 with current MZ slang where natural " +
@@ -198,9 +197,9 @@ const toneInstruction: Record<TonePreset, string> = {
     "Sincere but not heavy. Acknowledge the slip, offer to make it right, keep it short. " +
     "ごめん/すみません level depending on how casual the situation already is.",
   compliment:
-    "Specific, grounded compliment — style, taste, vibe, laugh, the way she chose this spot. " +
+    "Specific, grounded compliment — style, taste, vibe, laugh, the way they chose this spot. " +
     "Avoid generic 'kawaii'. Keep it 1 sentence, MZ-natural. If complimenting appearance, " +
-    "anchor it to something she chose (outfit, hair color) not her body."
+    "anchor it to something they chose (outfit, hair color), not their body."
 };
 
 export function buildSystemPrompt(req: TranslateRequest): string {
